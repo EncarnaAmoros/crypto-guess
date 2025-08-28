@@ -1,0 +1,29 @@
+@use "~/assets/css/variables.scss";
+
+.generalLayout {
+  background-color: variables.$color-gray1;
+  height: 100dvh;
+  width: 100dvw;
+  display: flex;
+  padding: 36px;
+  gap: 12px;
+  box-sizing: border-box;
+
+  &__content {
+    box-sizing: border-box;
+    border-radius: 12px;
+    height: 100%;
+    background-color: variables.$color-gray3;
+    padding: 12px;
+    display: flex;
+    overflow: auto;
+    width: 100%;
+  }
+
+  &--centered {
+    .generalLayout__content {
+      text-align: center;
+      justify-content: center;
+    }
+  }
+}

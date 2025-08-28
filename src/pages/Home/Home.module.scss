@@ -1,0 +1,32 @@
+@use "~/assets/css/variables.scss";
+
+.home {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  gap: 36px;
+  min-height: fit-content;
+
+  &__title {
+    font-size: 34px;
+    font-weight: bold;
+    color: variables.$color-text-black;
+  }
+
+  &__subtitle {
+    font-size: 20px;
+    color: variables.$color-text-black2;
+  }
+
+  &__link {
+    text-decoration: none;
+    color: variables.$color-text-black2;
+    font-size: 17px;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}

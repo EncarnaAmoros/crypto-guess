@@ -1,0 +1,8 @@
+export enum SUPPORTED_LOCALES {
+  ENGLISH = "en",
+  SPANISH = "es",
+}
+
+export const SUPPORTED_LOCALES_LIST = Object.values(SUPPORTED_LOCALES);
+
+export const DEFAULT_LOCALE = SUPPORTED_LOCALES.ENGLISH;

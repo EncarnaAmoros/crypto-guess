@@ -1,0 +1,18 @@
+@use "~/assets/css/variables.scss";
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  font-size: variables.$base-font-size;
+  color: variables.$color-text-black;
+  font-family: "Source Sans 3", sans-serif;
+}
+
+body {
+  margin: 0;
+}

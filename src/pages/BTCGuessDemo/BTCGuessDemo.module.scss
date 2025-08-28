@@ -1,0 +1,9 @@
+@use "~/assets/css/variables.scss";
+
+.btcGuessDemo {
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  gap: 36px;
+  width: 100%;
+}

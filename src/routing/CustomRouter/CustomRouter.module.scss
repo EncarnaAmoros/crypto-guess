@@ -1,0 +1,15 @@
+@use "~/assets/css/variables.scss";
+
+.container {
+  background-color: white;
+  height: 100dvh;
+  display: flex;
+  flex-direction: column;
+}
+
+.container__content {
+  box-sizing: border-box;
+  flex-grow: 1;
+  overflow-y: auto;
+  background: white;
+}
