@@ -1,3 +1,12 @@
 {
+  "accept": "Aceptar",
+  "general.error": "Algo salió mal. Inténtalo de nuevo más tarde.",
+  "login": "Iniciar sesión",
+  "login.description": "¿Te animas a predecir precios de criptomonedas? Inicia sesión para jugar.",
+  "signup": "Registrarse",
+  "signup.description": "¿Quieres empezar a predecir precios de criptomonedas? Regístrate para jugar.",
+  "user.already.exists": "El nombre de usuario ya existe",
+  "user.not.found": "Usuario no encontrado",
+  "username": "Nombre de usuario",
   "welcome.message": "Le damos la bienvenida a BTC Guess"
 }

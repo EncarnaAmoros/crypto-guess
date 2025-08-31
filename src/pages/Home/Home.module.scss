@@ -12,17 +12,17 @@
   &__title {
     font-size: 34px;
     font-weight: bold;
-    color: variables.$color-text-black;
+    color: variables.$color-text-light;
   }
 
   &__subtitle {
     font-size: 20px;
-    color: variables.$color-text-black2;
+    color: variables.$color-text-light;
   }
 
   &__link {
     text-decoration: none;
-    color: variables.$color-text-black2;
+    color: variables.$color-text-muted;
     font-size: 17px;
 
     &:hover {

@@ -1,0 +1,48 @@
+@use "~/assets/css/variables.scss";
+
+.authWrapper {
+  height: 100dvh;
+  width: 100dvw;
+  display: flex;
+  flex-direction: column;
+  padding: 36px;
+  gap: 12px;
+  box-sizing: border-box;
+  min-width: 500px;
+  overflow: auto;
+
+  &__container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-sizing: border-box;
+    border-radius: 12px;
+    height: 100%;
+    background-color: variables.$color-surface;
+    padding: 36px;
+    overflow: auto;
+    width: 100%;
+  }
+
+  &__header {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    gap: 12px;
+  }
+
+  &__navButton {
+    &--active {
+      color: variables.$color-gold !important;
+    }
+  }
+
+  &__content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+  }
+}

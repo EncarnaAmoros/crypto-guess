@@ -1,3 +1,12 @@
 {
+  "accept": "Accept",
+  "general.error": "Something went wrong. Try again later.",
+  "login": "Login",
+  "login.description": "Ready to predict crypto prices? Login to play",
+  "signup": "Sign Up",
+  "signup.description": "Ready to predict crypto prices? Sign up to play",
+  "user.already.exists": "Username already exists",
+  "user.not.found": "User not found",
+  "username": "Username",
   "welcome.message": "Welcome to BTC Guess"
 }
