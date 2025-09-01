@@ -1,7 +1,7 @@
 @use "~/assets/css/variables.scss";
 
 .generalLayout {
-  background-color: variables.$color-gray1;
+  background-color: variables.$color-text-light;
   height: 100dvh;
   width: 100dvw;
   display: flex;
@@ -13,7 +13,7 @@
     box-sizing: border-box;
     border-radius: 12px;
     height: 100%;
-    background-color: variables.$color-gray3;
+    background-color: variables.$color-text-light;
     padding: 12px;
     display: flex;
     overflow: auto;

@@ -7,10 +7,10 @@ body {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  overflow: hidden;
   font-size: variables.$base-font-size;
-  color: variables.$color-text-black;
+  color: variables.$color-text-light;
   font-family: "Source Sans 3", sans-serif;
+  background-color: variables.$color-background;
 }
 
 body {
