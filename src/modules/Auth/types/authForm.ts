@@ -1,4 +1,4 @@
 export const AUTH_FORM_TYPES = {
-  LOGIN: "login",
+  SIGNIN: "signin",
   SIGNUP: "signup",
 };

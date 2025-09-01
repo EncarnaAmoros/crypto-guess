@@ -57,15 +57,20 @@ const useUserService = () => {
       .eq("username", username)
       .single();
 
-    return error
-      ? {
-          error: true,
-          message: intl.formatMessage({ id: "general.error" }),
-        }
-      : {
-          error: false,
-          data,
-        };
+    if (error) {
+      return {
+        error: true,
+        message:
+          error.code === REQUESTS_ERRORS.NO_RESULT_FOUND
+            ? intl.formatMessage({ id: "user.not.found" })
+            : intl.formatMessage({ id: "general.error" }),
+      };
+    }
+
+    return {
+      error: false,
+      data,
+    };
   };
 
   return {

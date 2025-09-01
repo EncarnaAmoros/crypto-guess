@@ -11,8 +11,9 @@ const useUserAuthForm = () => {
   const navigate = useNavigate();
 
   const [username, setUsername] = useState("");
+  const [loading, setLoading] = useState(false);
   const [authFormError, setAuthFormError] = useState("");
-  const [authFormType, setAuthFormType] = useState(AUTH_FORM_TYPES.LOGIN);
+  const [authFormType, setAuthFormType] = useState(AUTH_FORM_TYPES.SIGNIN);
 
   const { setSession } = useSessionStore();
 
@@ -20,29 +21,36 @@ const useUserAuthForm = () => {
     _event: React.MouseEvent<HTMLElement>,
     newValue: string
   ) => {
+    setUsername("");
     setAuthFormType(newValue);
   };
 
   const handleLogin = async () => {
+    setLoading(true);
     const response = await getUserByUsername(username);
 
     if (response.error) {
       setAuthFormError(response.message);
+      setLoading(false);
       return;
     }
 
+    setLoading(false);
     setSession({ user: response.data });
     navigate(ROUTES.HOME);
   };
 
   const handleSignup = async () => {
+    setLoading(true);
     const response = await addUser(username);
 
     if (response.error) {
       setAuthFormError(response.message);
+      setLoading(false);
       return;
     }
 
+    setLoading(false);
     setSession({ user: response.data });
     navigate(ROUTES.HOME);
   };
@@ -50,7 +58,7 @@ const useUserAuthForm = () => {
   const handleFormSubmit = async () => {
     setAuthFormError("");
 
-    if (authFormType === AUTH_FORM_TYPES.LOGIN) {
+    if (authFormType === AUTH_FORM_TYPES.SIGNIN) {
       await handleLogin();
     } else {
       await handleSignup();
@@ -58,11 +66,11 @@ const useUserAuthForm = () => {
   };
 
   return {
+    loading,
     username,
-    authFormError,
     authFormType,
+    authFormError,
     setUsername,
-    setAuthFormType,
     setAuthFormError,
     handleToggleChange,
     handleFormSubmit,

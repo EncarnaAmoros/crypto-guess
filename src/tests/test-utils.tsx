@@ -1,7 +1,7 @@
 import { ReactElement } from "react";
 import { MemoryRouter } from "react-router-dom";
 import { IntlProvider } from "react-intl";
-import { render } from "@testing-library/react";
+import { render, renderHook, RenderHookResult } from "@testing-library/react";
 import englishMessages from "~/locales/en.json";
 
 export const renderWithRouterProvider = (
@@ -21,4 +21,16 @@ export const renderWithIntl = (ui: ReactElement) => {
       {ui}
     </IntlProvider>
   );
+};
+
+export const renderHookWithIntl = <T,>(
+  hook: () => T
+): RenderHookResult<T, unknown> => {
+  return renderHook(hook, {
+    wrapper: ({ children }) => (
+      <IntlProvider locale="en" messages={englishMessages}>
+        {children}
+      </IntlProvider>
+    ),
+  });
 };

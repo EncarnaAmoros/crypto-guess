@@ -4,6 +4,7 @@ import {
   ToggleButtonGroup,
   TextField,
   Button,
+  CircularProgress,
 } from "@mui/material";
 import { AUTH_FORM_TYPES } from "~/modules/Auth/types/authForm";
 import { InfoDialog } from "~/components";
@@ -19,8 +20,8 @@ const UserAuthForm = () => {
     username,
     authFormType,
     authFormError,
+    loading,
     setUsername,
-    setAuthFormType,
     setAuthFormError,
     handleToggleChange,
     handleFormSubmit,
@@ -37,19 +38,17 @@ const UserAuthForm = () => {
             aria-label="auth navigation"
           >
             <ToggleButton
-              value={AUTH_FORM_TYPES.LOGIN}
-              onClick={() => setAuthFormType(AUTH_FORM_TYPES.LOGIN)}
-              aria-label="login"
+              value={AUTH_FORM_TYPES.SIGNIN}
+              aria-label="signin"
               className={classNames(styles.userAuthForm__navButton, {
                 [styles["userAuthForm__navButton--active"]]:
-                  authFormType === AUTH_FORM_TYPES.LOGIN,
+                  authFormType === AUTH_FORM_TYPES.SIGNIN,
               })}
             >
-              {intl.formatMessage({ id: "login" })}
+              {intl.formatMessage({ id: "signin" })}
             </ToggleButton>
             <ToggleButton
               value={AUTH_FORM_TYPES.SIGNUP}
-              onClick={() => setAuthFormType(AUTH_FORM_TYPES.SIGNUP)}
               aria-label="signup"
               className={classNames(styles.userAuthForm__navButton, {
                 [styles["userAuthForm__navButton--active"]]:
@@ -73,8 +72,18 @@ const UserAuthForm = () => {
               margin="normal"
             />
 
-            <Button variant="contained" onClick={handleFormSubmit}>
-              {intl.formatMessage({ id: authFormType })}
+            <Button
+              variant="contained"
+              onClick={handleFormSubmit}
+              disabled={loading || !username}
+              startIcon={loading ? <CircularProgress size={14} /> : undefined}
+            >
+              {intl.formatMessage({
+                id:
+                  authFormType === AUTH_FORM_TYPES.SIGNIN
+                    ? "signin"
+                    : "create.account",
+              })}
             </Button>
           </div>
         </section>
