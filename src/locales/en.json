@@ -6,8 +6,8 @@
   "signin.description": "Ready to predict crypto prices? Login to play",
   "signup": "Sign Up",
   "signup.description": "Ready to predict crypto prices? Sign up to play",
-  "user.already.exists": "Username already exists. Try with another username.",
-  "user.not.found": "User not found. Try with another username.",
+  "user.already.exists": "Username {username} already exists. Try with another username.",
+  "user.not.found": "User {username} not found. Try with another username.",
   "username": "Username",
   "welcome.message": "Welcome to BTC Guess"
 }

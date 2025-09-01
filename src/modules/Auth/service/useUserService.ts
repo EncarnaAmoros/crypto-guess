@@ -19,7 +19,7 @@ const useUserService = () => {
         error: true,
         message:
           error.code === REQUESTS_ERRORS.ALREADY_EXISTS
-            ? intl.formatMessage({ id: "user.already.exists" })
+            ? intl.formatMessage({ id: "user.already.exists" }, { username })
             : intl.formatMessage({ id: "general.error" }),
       };
     }
@@ -62,7 +62,7 @@ const useUserService = () => {
         error: true,
         message:
           error.code === REQUESTS_ERRORS.NO_RESULT_FOUND
-            ? intl.formatMessage({ id: "user.not.found" })
+            ? intl.formatMessage({ id: "user.not.found" }, { username })
             : intl.formatMessage({ id: "general.error" }),
       };
     }

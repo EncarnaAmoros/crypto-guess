@@ -67,7 +67,12 @@ const UserAuthForm = () => {
               label={intl.formatMessage({ id: "username" })}
               variant="outlined"
               value={username}
-              onChange={(e) => setUsername(e.target.value)}
+              onChange={(e) =>
+                setUsername(e.target.value.replaceAll(/\s/g, ""))
+              }
+              onKeyDown={(e) => {
+                if (e.key === " ") e.preventDefault();
+              }}
               fullWidth
               margin="normal"
             />

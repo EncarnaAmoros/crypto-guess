@@ -56,7 +56,7 @@ describe("useUserService", () => {
 
       expect(response).toEqual({
         error: true,
-        message: "Username already exists. Try with another username.",
+        message: "Username testuser already exists. Try with another username.",
       });
     });
 
@@ -66,7 +66,7 @@ describe("useUserService", () => {
 
       expect(response).toEqual({
         error: true,
-        message: "User not found. Try with another username.",
+        message: "User testuser not found. Try with another username.",
       });
     });
   });
