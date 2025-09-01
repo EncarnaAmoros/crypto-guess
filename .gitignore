@@ -26,3 +26,12 @@ dist-ssr
 # dotenv environment variables file
 .env*
 !.env.example
+
+# tests
+coverage
+
+#build output
+tsconfig.node.tsbuildinfo
+vite.config.d.ts
+vite.config.js
+
