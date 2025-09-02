@@ -1,23 +1,18 @@
 import { Outlet } from "react-router-dom";
-import { LAYOUT_TYPE } from "~/modules/Layout/constants/layout";
-import classNames from "classnames";
+import MainSideBar from "./components/MainSideBar/MainSideBar";
+import Header from "./components/Header/Header";
 
 import styles from "./GeneralLayout.module.scss";
 
-interface GeneralLayoutProps {
-  layoutType?: LAYOUT_TYPE;
-}
-
-const GeneralLayout = ({ layoutType }: GeneralLayoutProps) => {
+const GeneralLayout = () => {
   return (
-    <div
-      className={classNames(styles.generalLayout, {
-        [styles["generalLayout--centered"]]:
-          layoutType === LAYOUT_TYPE.CENTERED,
-      })}
-    >
-      <div className={styles.generalLayout__content}>
-        <Outlet />
+    <div className={styles.generalLayout}>
+      <MainSideBar />
+      <div className={styles.generalLayout__main}>
+        <Header />
+        <div className={styles.generalLayout__content}>
+          <Outlet />
+        </div>
       </div>
     </div>
   );

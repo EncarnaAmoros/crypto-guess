@@ -1,0 +1,14 @@
+@use "~/assets/css/variables.scss";
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 12px;
+  background-color: variables.$color-surface;
+  border: 1px solid rgba(variables.$color-muted, 0.1);
+  padding: 30px;
+  box-sizing: border-box;
+  height: 30px;
+  width: 100%;
+}

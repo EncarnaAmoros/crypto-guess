@@ -12,6 +12,9 @@ import "./assets/css/global.scss";
 const darkTheme = createTheme({
   palette: {
     mode: "dark",
+    primary: {
+      main: "#f5f5f5",
+    },
   },
 });
 

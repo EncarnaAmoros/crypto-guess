@@ -1,30 +1,36 @@
-import { useIntl } from "react-intl";
-import { Link } from "react-router-dom";
-import { ROUTES } from "~/routing/routes";
-import useSessionStore from "~/modules/Auth/store/useSessionStore";
+import { useEffect, useState } from "react";
+import { CURRENCY } from "~/modules/BTC/types/cryptoData";
+import { getBTCPrice } from "~/modules/BTC/service/CryptoService";
+import { BetScore } from "~/modules/User/components";
+import { CryptoPrice } from "~/modules/BTC/components";
 
 import styles from "./Home.module.scss";
 
 const Home = () => {
-  const intl = useIntl();
-  const cleanSession = useSessionStore((state) => state.cleanSession);
+  const [price, setPrice] = useState<number>(0);
+  const [loading, setLoading] = useState<boolean>(true);
 
-  const handleClearAccount = () => {
-    cleanSession();
-  };
+  useEffect(() => {
+    setLoading(true);
+    getBTCPrice().then((price) => {
+      setTimeout(() => {
+        setPrice(price);
+        setLoading(false);
+      }, 4000);
+    });
+  }, []);
 
   return (
     <div className={styles.home}>
-      <h1 className={styles.home__title}>BTC Guess</h1>
-      <h2 className={styles.home__subtitle}>
-        {intl.formatMessage({ id: "welcome.message" })}
-      </h2>
-      <Link to={ROUTES.BTC_GUESS} className={styles.home__link}>
-        Click here
-      </Link>
-      <button type="button" onClick={handleClearAccount}>
-        Log out
-      </button>
+      <div className={styles.home__infoContainer}>
+        <BetScore score={0} />
+        <CryptoPrice
+          cryptoName="Bitcoin"
+          price={price}
+          currency={CURRENCY.USD}
+          loading={loading}
+        />
+      </div>
     </div>
   );
 };

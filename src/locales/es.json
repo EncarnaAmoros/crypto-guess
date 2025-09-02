@@ -2,12 +2,14 @@
   "accept": "Aceptar",
   "create.account": "Crear cuenta",
   "general.error": "Algo salió mal. Inténtalo de nuevo más tarde.",
+  "hello.username": "Hola, {username}",
+  "logout": "Cerrar sesión",
+  "score": "Puntuación",
   "signin": "Iniciar sesión",
   "signin.description": "¿Te animas a predecir precios de criptomonedas? Inicia sesión para jugar.",
   "signup": "Registrarse",
   "signup.description": "¿Quieres empezar a predecir precios de criptomonedas? Regístrate para jugar.",
   "user.already.exists": "El nombre de usuario {username} ya existe. Introduce otro nombre de usuario.",
   "user.not.found": "Usuario {username} no encontrado. Introduce otro nombre de usuario.",
-  "username": "Nombre de usuario",
-  "welcome.message": "Le damos la bienvenida a BTC Guess"
+  "username": "Nombre de usuario"
 }

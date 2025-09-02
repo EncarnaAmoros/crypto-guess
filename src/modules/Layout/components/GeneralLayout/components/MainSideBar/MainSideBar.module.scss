@@ -1,0 +1,27 @@
+@use "~/assets/css/variables.scss";
+
+.mainSideBar {
+  padding: 12px 0;
+  box-sizing: border-box;
+  max-height: 100dvh;
+  height: 100%;
+  width: 300px;
+
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+  }
+
+  &__icon {
+    width: 30px;
+    height: 30px;
+  }
+
+  &__title {
+    text-align: center;
+    font-size: 22px;
+    font-weight: 600;
+  }
+}

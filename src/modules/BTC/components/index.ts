@@ -1,1 +1,1 @@
-export { default as BTCGuess } from "./BTCGuess/BTCGuess";
+export { default as CryptoPrice } from "./CryptoPrice/CryptoPrice";
