@@ -62,8 +62,8 @@ const useBetSection = () => {
       ? intl.formatMessage({ id: "bet.description" })
       : intl.formatMessage({ id: "bet.empty.state.description" });
 
-  const currentBetOnGoing =
-    userBets.length > 0 && !!userBets?.find((bet) => !bet.success);
+  const currentBetOnGoing: boolean =
+    userBets.length > 0 && !!userBets?.find((bet) => bet.success == null);
 
   const betTextDescription = currentBetOnGoing
     ? onGoingBetText

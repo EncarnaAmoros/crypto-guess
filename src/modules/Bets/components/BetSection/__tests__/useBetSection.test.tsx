@@ -2,6 +2,7 @@ import { waitFor } from "@testing-library/react";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { renderHookWithIntl } from "~/tests/test-utils";
 import useBetSection from "../useBetSection";
+import { GENERAL_ERROR } from "~/tests/constants/errorMessages";
 import { CRYPTO_BET } from "~/modules/Bets/constants/bets";
 import {
   defaultUser,
@@ -119,9 +120,7 @@ describe("useBetSection", () => {
     renderHookWithIntl(() => useBetSection());
 
     await waitFor(() => {
-      expect(mockSetGeneralError).toHaveBeenCalledWith(
-        "Something went wrong. Try again later."
-      );
+      expect(mockSetGeneralError).toHaveBeenCalledWith(GENERAL_ERROR);
     });
   });
 
@@ -183,9 +182,7 @@ describe("useBetSection", () => {
 
       await result.current.makeBetHandler(CRYPTO_BET.UP);
 
-      expect(mockSetGeneralError).toHaveBeenCalledWith(
-        "Something went wrong. Try again later."
-      );
+      expect(mockSetGeneralError).toHaveBeenCalledWith(GENERAL_ERROR);
     });
 
     it("should not create bet when user is not logged in", async () => {

@@ -49,10 +49,11 @@ const useActiveBets = (intervalMs = 1000) => {
       const response = await getUserScore(session?.user?.id);
       if (response.error) return;
 
-      const calculatedScore = betSuccess
+      const newScore = betSuccess
         ? response.data.score + 1
-        : response.data.score;
-      const newScore = calculatedScore < 0 ? 0 : calculatedScore;
+        : response.data.score - 1;
+
+      if (newScore < 0) return;
       upsertUserScore(session?.user?.id, newScore);
     },
     [intl, session?.user?.id, setGeneralError, setUserBets]

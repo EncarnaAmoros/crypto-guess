@@ -1,8 +1,9 @@
 import { screen, waitFor } from "@testing-library/react";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { renderWithIntl } from "~/tests/test-utils";
-import UserBetScore from "../UserBetScore";
+import { GENERAL_ERROR } from "~/tests/constants/errorMessages";
 import { UserScore } from "~/modules/Bets/types/userBets";
+import UserBetScore from "../UserBetScore";
 import * as betsService from "~/modules/Bets/service/betsService";
 import * as useSessionStore from "~/modules/Auth/store/useSessionStore";
 import * as useGeneralLayoutStore from "~/modules/Layout/hooks/useGeneralLayoutStore";
@@ -99,9 +100,7 @@ describe("UserBetScore", () => {
     renderWithIntl(<UserBetScore />);
 
     await waitFor(() => {
-      expect(mockSetGeneralError).toHaveBeenCalledWith(
-        "Something went wrong. Try again later."
-      );
+      expect(mockSetGeneralError).toHaveBeenCalledWith(GENERAL_ERROR);
     });
   });
 

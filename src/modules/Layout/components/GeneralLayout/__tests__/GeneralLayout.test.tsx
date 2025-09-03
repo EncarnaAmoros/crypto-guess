@@ -1,6 +1,7 @@
 import { screen, waitFor } from "@testing-library/react";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { renderWithRouterProvider } from "~/tests/test-utils";
+import { GENERAL_ERROR } from "~/tests/constants/errorMessages";
 import * as useGeneralLayoutStore from "~/modules/Layout/hooks/useGeneralLayoutStore";
 import GeneralLayout from "../GeneralLayout";
 
@@ -26,9 +27,8 @@ describe("GeneralLayout", () => {
   });
 
   it("should display error dialog when generalError exists", async () => {
-    const errorMessage = "Something went wrong. Try again later.";
     mockUseGeneralLayoutStore.mockReturnValue({
-      generalError: errorMessage,
+      generalError: GENERAL_ERROR,
       setGeneralError: mockSetGeneralError,
     });
 
@@ -36,7 +36,7 @@ describe("GeneralLayout", () => {
 
     await waitFor(() => {
       expect(screen.getByRole("dialog")).toBeVisible();
-      expect(screen.getByText(errorMessage)).toBeVisible();
+      expect(screen.getByText(GENERAL_ERROR)).toBeVisible();
     });
   });
 });
