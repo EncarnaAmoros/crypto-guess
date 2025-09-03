@@ -12,12 +12,12 @@ import { CRYPTO_BET } from "~/modules/Bets/constants/bets";
 
 const useBetSection = () => {
   const session = useSessionStore((state) => state.session);
-  const bitcoinPrice = useBetStore((state) => state.bitcoinPrice);
   const setGeneralError = useGeneralLayoutStore(
     (state) => state.setGeneralError
   );
-  const { userBets, setUserBets } = useBetStore(
+  const { bitcoinPrice, userBets, setUserBets } = useBetStore(
     useShallow((state) => ({
+      bitcoinPrice: state.bitcoinPrice,
       userBets: state.userBets,
       setUserBets: state.setUserBets,
     }))
@@ -53,13 +53,21 @@ const useBetSection = () => {
     setUserBets(response.data);
   };
 
-  const betTextDescription =
+  const onGoingBetText = intl.formatMessage({
+    id: "bets.disabled.ongoing.bet",
+  });
+
+  const betDescription =
     userBets?.length > 0
       ? intl.formatMessage({ id: "bet.description" })
       : intl.formatMessage({ id: "bet.empty.state.description" });
 
   const currentBetOnGoing =
-    userBets.length > 0 && userBets?.find((bet) => bet.success === null);
+    userBets.length > 0 && !!userBets?.find((bet) => !bet.success);
+
+  const betTextDescription = currentBetOnGoing
+    ? onGoingBetText
+    : betDescription;
 
   return {
     betTextDescription,

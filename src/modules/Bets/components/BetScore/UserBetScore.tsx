@@ -42,7 +42,7 @@ const UserBetScore = () => {
         loadingUserScore ? (
           <div>
             {intl.formatMessage({ id: "score" })}:{" "}
-            <CircularProgress size={24} />
+            <CircularProgress size={24} data-testid="loader" />
           </div>
         ) : (
           `${intl.formatMessage({ id: "score" })}: ${userScore?.score ?? "-"}`

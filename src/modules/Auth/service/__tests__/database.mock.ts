@@ -43,7 +43,7 @@ export const mockUserService = async (
   vi.resetModules();
   vi.clearAllMocks();
 
-  vi.doMock("~/db/dbClient", async () => {
+  vi.doMock("~/services/dbClient", async () => {
     const { createSupabaseMock } = await import("./database.mock");
     return { supabase: createSupabaseMock(mockOptions) };
   });

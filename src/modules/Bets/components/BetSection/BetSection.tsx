@@ -33,26 +33,36 @@ const BetSection = () => {
           variant="contained"
           aria-label="Disabled button group"
         >
-          <Tooltip title={intl.formatMessage({ id: "bet.up.info" })}>
+          <Tooltip
+            title={
+              currentBetOnGoing ? "" : intl.formatMessage({ id: "bet.up.info" })
+            }
+          >
             <IconButton
               size="large"
               className={styles.betSection__betUp}
               aria-label={intl.formatMessage({ id: "bet.up.info" })}
               color="success"
               onClick={() => makeBetHandler(CRYPTO_BET.UP)}
-              disabled={!!currentBetOnGoing}
+              disabled={currentBetOnGoing}
             >
               <ArrowUpward />
             </IconButton>
           </Tooltip>
-          <Tooltip title={intl.formatMessage({ id: "bet.down.info" })}>
+          <Tooltip
+            title={
+              currentBetOnGoing
+                ? ""
+                : intl.formatMessage({ id: "bet.down.info" })
+            }
+          >
             <IconButton
               size="large"
               className={styles.betSection__betDown}
               aria-label={intl.formatMessage({ id: "bet.down.info" })}
               color="error"
               onClick={() => makeBetHandler(CRYPTO_BET.DOWN)}
-              disabled={!!currentBetOnGoing}
+              disabled={currentBetOnGoing}
             >
               <ArrowDownward />
             </IconButton>

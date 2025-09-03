@@ -5,7 +5,7 @@ export interface UserBet {
   userId: string;
   bet: CRYPTO_BET;
   cryptoPrice: number;
-  success: boolean;
+  success?: boolean;
   createdAt: Date;
   updatedAt: Date;
 }

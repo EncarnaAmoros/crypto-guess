@@ -15,7 +15,7 @@ import {
   upsertUserScore,
 } from "~/modules/Bets/service/betsService";
 
-const useActiveBets = () => {
+const useActiveBets = (intervalMs = 1000) => {
   const intl = useIntl();
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
@@ -49,7 +49,10 @@ const useActiveBets = () => {
       const response = await getUserScore(session?.user?.id);
       if (response.error) return;
 
-      const newScore = response.data.score + 1;
+      const calculatedScore = betSuccess
+        ? response.data.score + 1
+        : response.data.score;
+      const newScore = calculatedScore < 0 ? 0 : calculatedScore;
       upsertUserScore(session?.user?.id, newScore);
     },
     [intl, session?.user?.id, setGeneralError, setUserBets]
@@ -64,7 +67,6 @@ const useActiveBets = () => {
     if (!isBetReadyToResolve(ongoingBet)) return;
 
     const betSuccess = wasBetSuccess(ongoingBet, bitcoinPrice);
-
     updateBetAndScore(ongoingBet, betSuccess);
   }, [session?.user?.id, userBets, bitcoinPrice, updateBetAndScore]);
 
@@ -76,7 +78,7 @@ const useActiveBets = () => {
     if (currentBetOnGoing) {
       intervalRef.current = setInterval(() => {
         checkAndUpdateBets();
-      }, 1000);
+      }, intervalMs);
     } else if (intervalRef.current) {
       clearInterval(intervalRef.current);
       intervalRef.current = null;
@@ -88,7 +90,7 @@ const useActiveBets = () => {
         intervalRef.current = null;
       }
     };
-  }, [userBets, checkAndUpdateBets]);
+  }, [userBets, checkAndUpdateBets, intervalMs]);
 };
 
 export default useActiveBets;
