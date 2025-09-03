@@ -1,7 +1,8 @@
-import { supabase } from "~/db/dbClient";
+import { supabase } from "~/services/dbClient";
 import { User } from "~/modules/Auth/types/session";
-import { REQUESTS_ERRORS } from "~/db/constants/requestsErrors";
-import { ServiceResponse } from "~/db/constants/types/requests";
+import { REQUESTS_ERRORS } from "~/services/constants/requestsErrors";
+import { ServiceResponse } from "~/services/types/requests";
+import { deepConvertToCamelCase } from "~/services/utils/dataConverter";
 
 const USER_TABLE = "users";
 
@@ -26,7 +27,7 @@ export const addUser = async (
 
   return {
     error: false,
-    data,
+    data: deepConvertToCamelCase(data as unknown as User),
   };
 };
 
@@ -46,7 +47,7 @@ export const getUserById = async (
       }
     : {
         error: false,
-        data,
+        data: deepConvertToCamelCase(data as unknown as User),
       };
 };
 
@@ -71,6 +72,6 @@ export const getUserByUsername = async (
 
   return {
     error: false,
-    data,
+    data: deepConvertToCamelCase(data as unknown as User),
   };
 };

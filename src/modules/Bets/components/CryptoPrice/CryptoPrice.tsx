@@ -3,8 +3,6 @@ import CurrencyBitcoinIcon from "@mui/icons-material/CurrencyBitcoin";
 import { CircularProgress } from "@mui/material";
 import { InfoCard } from "~/components";
 
-import styles from "./CryptoPrice.module.scss";
-
 interface CryptoPriceProps {
   cryptoName: string;
   price: number;
@@ -20,7 +18,6 @@ const CryptoPrice = ({
 }: CryptoPriceProps) => {
   return (
     <InfoCard
-      className={styles.cryptoPrice}
       icon={<CurrencyBitcoinIcon />}
       text={
         loading ? (

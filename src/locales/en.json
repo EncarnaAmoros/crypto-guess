@@ -15,5 +15,6 @@
   "user.not.found": "User {username} not found. Try with another username.",
   "bet.up.info": "Bet if the price will go up",
   "bet.down.info": "Bet if the price will go down",
+  "bet.timer.remaining": "Time remaining of the bet",
   "username": "Username"
 }

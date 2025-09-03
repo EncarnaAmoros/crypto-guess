@@ -15,5 +15,6 @@
   "user.not.found": "Usuario {username} no encontrado. Introduce otro nombre de usuario.",
   "bet.up.info": "Apuesta si el precio subirá",
   "bet.down.info": "Apuesta si el precio bajará",
+  "bet.timer.remaining": "Tiempo restante de la apuesta",
   "username": "Nombre de usuario"
 }

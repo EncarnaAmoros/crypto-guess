@@ -8,8 +8,6 @@ import { getUserScore as getUserScoreService } from "~/modules/Bets/service/bets
 import useSessionStore from "~/modules/Auth/store/useSessionStore";
 import { InfoCard } from "~/components";
 
-import styles from "./UserBetScore.module.scss";
-
 const UserBetScore = () => {
   const intl = useIntl();
   const session = useSessionStore((state) => state.session);
@@ -39,7 +37,6 @@ const UserBetScore = () => {
 
   return (
     <InfoCard
-      className={styles.userBetScore}
       icon={<SportsScoreIcon />}
       text={
         loadingUserScore ? (

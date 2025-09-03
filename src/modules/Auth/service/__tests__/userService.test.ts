@@ -4,7 +4,7 @@ import {
   MOCK_NEW_USER,
   mockUserService,
 } from "~/modules/Auth/service/__tests__/database.mock";
-import { REQUESTS_ERRORS } from "~/db/constants/requestsErrors";
+import { REQUESTS_ERRORS } from "~/services/constants/requestsErrors";
 
 describe("userService", () => {
   describe("userService success cases", () => {

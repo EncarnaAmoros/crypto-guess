@@ -6,7 +6,7 @@ import useGeneralLayoutStore from "~/modules/Layout/hooks/useGeneralLayoutStore"
 const GET_BTC_PRICE_URL =
   "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd";
 
-const useBTCPrice = (intervalMs = 10000) => {
+const useBTCPrice = (intervalMs = 15000) => {
   const intl = useIntl();
 
   const setBitcoinPrice = useBetStore((state) => state.setBitcoinPrice);
@@ -25,8 +25,7 @@ const useBTCPrice = (intervalMs = 10000) => {
         if (isMounted) {
           setBitcoinPrice(data.bitcoin.usd);
         }
-      } catch (err) {
-        console.error("CoinGecko fetch error:", err);
+      } catch {
         if (isMounted) {
           setGeneralError(intl.formatMessage({ id: "general.error" }));
         }

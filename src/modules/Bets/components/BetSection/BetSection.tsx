@@ -7,6 +7,8 @@ import {
   Tooltip,
 } from "@mui/material";
 import { ArrowUpward, ArrowDownward } from "@mui/icons-material";
+import { CRYPTO_BET } from "~/modules/Bets/constants/bets";
+import useActiveBets from "./useActiveBets";
 import useBetSection from "./useBetSection";
 
 import styles from "./BetSection.module.scss";
@@ -14,7 +16,9 @@ import styles from "./BetSection.module.scss";
 const BetSection = () => {
   const intl = useIntl();
 
-  const { betTextDescription, currentBetOnGoing } = useBetSection();
+  const { betTextDescription, currentBetOnGoing, makeBetHandler } =
+    useBetSection();
+  useActiveBets();
 
   return (
     <Card variant="outlined" className={styles.betSection}>
@@ -35,6 +39,7 @@ const BetSection = () => {
               className={styles.betSection__betUp}
               aria-label={intl.formatMessage({ id: "bet.up.info" })}
               color="success"
+              onClick={() => makeBetHandler(CRYPTO_BET.UP)}
               disabled={!!currentBetOnGoing}
             >
               <ArrowUpward />
@@ -46,6 +51,7 @@ const BetSection = () => {
               className={styles.betSection__betDown}
               aria-label={intl.formatMessage({ id: "bet.down.info" })}
               color="error"
+              onClick={() => makeBetHandler(CRYPTO_BET.DOWN)}
               disabled={!!currentBetOnGoing}
             >
               <ArrowDownward />

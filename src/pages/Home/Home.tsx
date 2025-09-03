@@ -4,6 +4,7 @@ import {
   UserBetScore,
   BitcoinPrice,
   BetSection,
+  BetTimer,
 } from "~/modules/Bets/components";
 import { InfoDialog } from "~/components";
 
@@ -24,6 +25,7 @@ const Home = () => {
         <BitcoinPrice />
       </div>
       <BetSection />
+      <BetTimer />
       <InfoDialog
         open={!!generalError}
         onClose={() => setGeneralError("")}

@@ -2,12 +2,17 @@ import { useEffect, useCallback } from "react";
 import { useShallow } from "zustand/shallow";
 import { useIntl } from "react-intl";
 import useBetStore from "~/modules/Bets/store/useBetStore";
-import { getUserBets as getUserBetsService } from "~/modules/Bets/service/betsService";
+import {
+  getUserBets as getUserBetsService,
+  createUserBet,
+} from "~/modules/Bets/service/betsService";
 import useGeneralLayoutStore from "~/modules/Layout/hooks/useGeneralLayoutStore";
 import useSessionStore from "~/modules/Auth/store/useSessionStore";
+import { CRYPTO_BET } from "~/modules/Bets/constants/bets";
 
 const useBetSection = () => {
   const session = useSessionStore((state) => state.session);
+  const bitcoinPrice = useBetStore((state) => state.bitcoinPrice);
   const setGeneralError = useGeneralLayoutStore(
     (state) => state.setGeneralError
   );
@@ -17,6 +22,7 @@ const useBetSection = () => {
       setUserBets: state.setUserBets,
     }))
   );
+
   const intl = useIntl();
 
   const getUserBets = useCallback(async () => {
@@ -33,10 +39,19 @@ const useBetSection = () => {
     getUserBets();
   }, [getUserBets]);
 
-  // const makeBetHandler = (cryptoBet: CRYPTO_BET) => {
+  const makeBetHandler = async (cryptoBet: CRYPTO_BET) => {
+    if (!session?.user?.id) return;
 
-  //     createUserBet(session?.user?.id, cryptoBet, );
-  // }
+    const response = await createUserBet(
+      session?.user?.id,
+      cryptoBet,
+      bitcoinPrice
+    );
+    if (response.error)
+      return setGeneralError(intl.formatMessage({ id: response.messageKey }));
+
+    setUserBets(response.data);
+  };
 
   const betTextDescription =
     userBets?.length > 0
@@ -49,6 +64,7 @@ const useBetSection = () => {
   return {
     betTextDescription,
     currentBetOnGoing,
+    makeBetHandler,
   };
 };
 

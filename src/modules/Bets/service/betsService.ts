@@ -1,7 +1,8 @@
-import { ServiceResponse } from "~/db/constants/types/requests";
-import { supabase } from "~/db/dbClient";
+import { ServiceResponse } from "~/services/types/requests";
+import { supabase } from "~/services/dbClient";
 import { CRYPTO_BET } from "~/modules/Bets/constants/bets";
 import { UserBet, UserScore } from "~/modules/Bets/types/userBets";
+import { deepConvertToCamelCase } from "~/services/utils/dataConverter";
 
 const USER_BETS_TABLE = "user_bets";
 const USER_SCORES_TABLE = "user_scores";
@@ -29,7 +30,7 @@ export const createUserBet = async (
     };
   return {
     error: false,
-    data,
+    data: deepConvertToCamelCase(data),
   };
 };
 
@@ -51,7 +52,7 @@ export const updateUserBetSuccess = async (
 
   return {
     error: false,
-    data,
+    data: deepConvertToCamelCase(data),
   };
 };
 
@@ -72,16 +73,17 @@ export const getUserBets = async (
 
   return {
     error: false,
-    data,
+    data: deepConvertToCamelCase(data),
   };
 };
 
 export const upsertUserScore = async (
-  userId: string
+  userId: string,
+  score: number
 ): Promise<ServiceResponse<UserScore>> => {
   const { data, error } = await supabase
     .from(USER_SCORES_TABLE)
-    .upsert({ user_id: userId, score: 0 });
+    .upsert({ user_id: userId, score }, { onConflict: "user_id" });
 
   if (error)
     return {
@@ -91,7 +93,7 @@ export const upsertUserScore = async (
 
   return {
     error: false,
-    data: data as unknown as UserScore,
+    data: deepConvertToCamelCase(data as unknown as UserScore),
   };
 };
 
@@ -112,6 +114,6 @@ export const getUserScore = async (
 
   return {
     error: false,
-    data: data as UserScore,
+    data: deepConvertToCamelCase(data as UserScore),
   };
 };
