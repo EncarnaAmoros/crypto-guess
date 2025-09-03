@@ -1,5 +1,6 @@
 import styles from "./MainSideBar.module.scss";
-import BitcoinIcon from "~/../public/bitcoin-icon.svg";
+
+const APP_NAME = "PlayCrypto";
 
 const MainSideBar = () => {
   return (
@@ -7,10 +8,10 @@ const MainSideBar = () => {
       <header className={styles.mainSideBar__header}>
         <img
           className={styles.mainSideBar__icon}
-          src={BitcoinIcon}
+          src="/bitcoin-icon.svg"
           alt="Bitcoin Icon"
         />
-        <div className={styles.mainSideBar__title}>Crypto Games</div>
+        <div className={styles.mainSideBar__title}>{APP_NAME}</div>
       </header>
     </div>
   );

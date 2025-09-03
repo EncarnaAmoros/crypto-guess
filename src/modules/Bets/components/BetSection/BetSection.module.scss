@@ -1,0 +1,29 @@
+@use "~/assets/css/variables.scss";
+
+.betSection {
+  padding: 40px;
+  border-radius: 20px !important;
+  min-height: 200px;
+  width: 100%;
+  display: flex;
+  gap: 20px;
+  justify-content: space-between;
+  align-items: center;
+  color: variables.$color-muted-light !important;
+
+  &__description {
+    flex: 2;
+  }
+
+  &__actions {
+    flex: 1;
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    justify-content: center;
+
+    svg {
+      font-size: 30px !important;
+    }
+  }
+}
