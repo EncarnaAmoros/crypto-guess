@@ -1,6 +1,6 @@
 export interface ServiceResponseError {
   error: true;
-  message: string;
+  messageKey: string;
 }
 
 export interface ServiceResponseSuccess<T> {

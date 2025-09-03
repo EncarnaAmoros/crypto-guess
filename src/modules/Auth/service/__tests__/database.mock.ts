@@ -35,7 +35,7 @@ export const createSupabaseMock = (options?: {
   };
 };
 
-export const mockUseUserService = async (
+export const mockUserService = async (
   mockOptions?: Parameters<
     typeof import("./database.mock").createSupabaseMock
   >[0]
@@ -48,5 +48,5 @@ export const mockUseUserService = async (
     return { supabase: createSupabaseMock(mockOptions) };
   });
 
-  return (await import("../useUserService")).default;
+  return await import("../userService");
 };

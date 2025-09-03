@@ -1,4 +1,4 @@
-import { CURRENCY } from "~/modules/BTC/types/cryptoData";
+import { CURRENCY } from "~/modules/Bets/types/currency";
 import CurrencyBitcoinIcon from "@mui/icons-material/CurrencyBitcoin";
 import { CircularProgress } from "@mui/material";
 import { InfoCard } from "~/components";

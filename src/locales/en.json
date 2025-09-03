@@ -1,5 +1,7 @@
 {
   "accept": "Accept",
+  "bet.description": "Keep guessing the Bitcoin price and raise your score. Bet if the price will go up or down from your initial value.",
+  "bet.empty.state.description": "Start guessing the Bitcoin price and raise your score! Bet if the price will go up or down from your initial value.",
   "create.account": "Create account",
   "general.error": "Something went wrong. Try again later.",
   "hello.username": "Hello, {username}",

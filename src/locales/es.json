@@ -1,5 +1,7 @@
 {
   "accept": "Aceptar",
+  "bet.description": "Sigue adivinando el precio del Bitcoin y aumenta tu puntuación. Apuesta si en el próximo minuto el precio subirá o bajará desde tu valor inicial.",
+  "bet.empty.state.description": "¡Empieza a adivinar el precio del Bitcoin y sube tu puntuación! Apuesta si en el próximo minuto el precio subirá o bajará desde tu valor inicial.",
   "create.account": "Crear cuenta",
   "general.error": "Algo salió mal. Inténtalo de nuevo más tarde.",
   "hello.username": "Hola, {username}",
