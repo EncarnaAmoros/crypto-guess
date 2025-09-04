@@ -1,13 +1,13 @@
+import { useIntl } from "react-intl";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ROUTES } from "~/routing/routes";
 import { AUTH_FORM_TYPES } from "~/modules/Auth/types/authForm";
 import useSessionStore from "~/modules/Auth/store/useSessionStore";
-import useUserService from "~/modules/Auth/service/useUserService";
+import { addUser, getUserByUsername } from "~/modules/Auth/service/userService";
 
 const useUserAuthForm = () => {
-  const { addUser, getUserByUsername } = useUserService();
-
+  const intl = useIntl();
   const navigate = useNavigate();
 
   const [username, setUsername] = useState("");
@@ -30,7 +30,7 @@ const useUserAuthForm = () => {
     const response = await getUserByUsername(username);
 
     if (response.error) {
-      setAuthFormError(response.message);
+      setAuthFormError(intl.formatMessage({ id: response.messageKey }));
       setLoading(false);
       return;
     }
@@ -45,7 +45,7 @@ const useUserAuthForm = () => {
     const response = await addUser(username);
 
     if (response.error) {
-      setAuthFormError(response.message);
+      setAuthFormError(intl.formatMessage({ id: response.messageKey }));
       setLoading(false);
       return;
     }

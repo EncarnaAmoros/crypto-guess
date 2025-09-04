@@ -1,0 +1,22 @@
+@use "~/assets/css/variables.scss";
+
+.infoCard {
+  padding: 40px 20px;
+  border-radius: 20px !important;
+  flex: 1;
+  min-height: 200px;
+  max-height: 200px;
+  height: 100%;
+  width: 100%;
+  min-width: 200px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: variables.$color-muted-light !important;
+
+  &__icon svg {
+    font-size: 45px !important;
+    margin-right: 8px;
+    margin-top: 1px;
+  }
+}

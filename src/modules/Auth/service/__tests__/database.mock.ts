@@ -35,7 +35,7 @@ export const createSupabaseMock = (options?: {
   };
 };
 
-export const mockUseUserService = async (
+export const mockUserService = async (
   mockOptions?: Parameters<
     typeof import("./database.mock").createSupabaseMock
   >[0]
@@ -43,10 +43,10 @@ export const mockUseUserService = async (
   vi.resetModules();
   vi.clearAllMocks();
 
-  vi.doMock("~/db/dbClient", async () => {
+  vi.doMock("~/services/dbClient", async () => {
     const { createSupabaseMock } = await import("./database.mock");
     return { supabase: createSupabaseMock(mockOptions) };
   });
 
-  return (await import("../useUserService")).default;
+  return await import("../userService");
 };
