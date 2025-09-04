@@ -33,7 +33,7 @@ const useBetTimer = () => {
   }, [userBets]);
 
   useEffect(() => {
-    const ongoingBet = userBets.find((bet) => bet.success === null);
+    const ongoingBet = userBets?.find((bet) => bet.success === null);
 
     if (ongoingBet && !isBetReadyToResolve(ongoingBet)) {
       calculateRemainingTime();

@@ -3,8 +3,7 @@ import { User } from "~/modules/Auth/types/session";
 import { REQUESTS_ERRORS } from "~/services/constants/requestsErrors";
 import { ServiceResponse } from "~/services/types/requests";
 import { deepConvertToCamelCase } from "~/services/utils/dataConverter";
-
-const USER_TABLE = "users";
+import { USER_TABLE } from "~/services/constants/dbService";
 
 export const addUser = async (
   username: string

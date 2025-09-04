@@ -1,19 +1,25 @@
+import { useShallow } from "zustand/shallow";
 import { useCallback, useEffect, useState } from "react";
 import { useIntl } from "react-intl";
 import SportsScoreIcon from "@mui/icons-material/SportsScore";
 import { CircularProgress } from "@mui/material";
-import { UserScore } from "~/modules/Bets/types/userBets";
 import useGeneralLayoutStore from "~/modules/Layout/hooks/useGeneralLayoutStore";
 import { getUserScore as getUserScoreService } from "~/modules/Bets/service/betsService";
 import useSessionStore from "~/modules/Auth/store/useSessionStore";
+import useBetStore from "~/modules/Bets/store/useBetStore";
 import { InfoCard } from "~/components";
 
 const UserBetScore = () => {
   const intl = useIntl();
   const session = useSessionStore((state) => state.session);
 
-  const [userScore, setUserScore] = useState<UserScore | null>(null);
   const [loadingUserScore, setLoadingUserScore] = useState<boolean>(true);
+  const { userScore, setUserScore } = useBetStore(
+    useShallow((state) => ({
+      userScore: state.userScore,
+      setUserScore: state.setUserScore,
+    }))
+  );
   const setGeneralError = useGeneralLayoutStore(
     (state) => state.setGeneralError
   );
@@ -29,7 +35,7 @@ const UserBetScore = () => {
       return setGeneralError(intl.formatMessage({ id: response.messageKey }));
 
     setUserScore(response.data);
-  }, [session?.user?.id, setGeneralError, intl]);
+  }, [session?.user?.id, intl, setGeneralError, setUserScore]);
 
   useEffect(() => {
     getUserScore();

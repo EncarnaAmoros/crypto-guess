@@ -3,9 +3,10 @@ import { supabase } from "~/services/dbClient";
 import { CRYPTO_BET } from "~/modules/Bets/constants/bets";
 import { UserBet, UserScore } from "~/modules/Bets/types/userBets";
 import { deepConvertToCamelCase } from "~/services/utils/dataConverter";
-
-const USER_BETS_TABLE = "user_bets";
-const USER_SCORES_TABLE = "user_scores";
+import {
+  USER_BETS_TABLE,
+  USER_SCORES_TABLE,
+} from "~/services/constants/dbService";
 
 export const createUserBet = async (
   userId: string,

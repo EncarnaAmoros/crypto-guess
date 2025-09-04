@@ -1,6 +1,6 @@
 import { screen, waitFor } from "@testing-library/react";
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { renderWithRouterProvider } from "~/tests/test-utils";
+import { renderWithRouterProvider } from "~/tests/testUtils";
 import { GENERAL_ERROR } from "~/tests/constants/errorMessages";
 import * as useGeneralLayoutStore from "~/modules/Layout/hooks/useGeneralLayoutStore";
 import GeneralLayout from "../GeneralLayout";

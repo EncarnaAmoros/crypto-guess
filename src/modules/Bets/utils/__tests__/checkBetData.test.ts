@@ -1,5 +1,9 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
-import { isBetReadyToResolve, wasBetSuccess } from "../checkBetData";
+import {
+  isBetReadyToResolve,
+  getBetPoints,
+  shouldUpdateScore,
+} from "../checkBetData";
 import { UserBet } from "~/modules/Bets/types/userBets";
 import { CRYPTO_BET, BET_TIME } from "~/modules/Bets/constants/bets";
 
@@ -23,7 +27,7 @@ describe("checkBetData", () => {
   });
 
   describe("isBetReadyToResolve function", () => {
-    it.only("should return false when time is one second before the bet time limit", () => {
+    it("should return false when time is one second before the bet time limit", () => {
       const betCreationTime = new Date("2023-01-01T12:00:00Z");
       const currentTime = new Date(betCreationTime.getTime() + BET_TIME - 1000);
 
@@ -68,50 +72,50 @@ describe("checkBetData", () => {
     });
   });
 
-  describe("wasBetSuccess function", () => {
+  describe("getBetPoints function", () => {
     describe("UP bets", () => {
-      it("should return true when current price is higher than bet price", () => {
+      it("should return 1 when current price is higher than bet price", () => {
         const bet = { ...mockBet, bet: CRYPTO_BET.UP, cryptoPrice: 45000 };
         const currentPrice = 46000;
 
-        expect(wasBetSuccess(bet, currentPrice)).toBe(true);
+        expect(getBetPoints(bet, currentPrice)).toBe(1);
       });
 
-      it("should return false when current price is lower than bet price", () => {
+      it("should return -1 when current price is lower than bet price", () => {
         const bet = { ...mockBet, bet: CRYPTO_BET.UP, cryptoPrice: 45000 };
         const currentPrice = 44000;
 
-        expect(wasBetSuccess(bet, currentPrice)).toBe(false);
+        expect(getBetPoints(bet, currentPrice)).toBe(-1);
       });
 
-      it("should return false when current price equals bet price", () => {
+      it("should return 0 when current price equals bet price", () => {
         const bet = { ...mockBet, bet: CRYPTO_BET.UP, cryptoPrice: 45000 };
         const currentPrice = 45000;
 
-        expect(wasBetSuccess(bet, currentPrice)).toBe(false);
+        expect(getBetPoints(bet, currentPrice)).toBe(0);
       });
     });
 
     describe("DOWN bets", () => {
-      it("should return true when current price is lower than bet price", () => {
+      it("should return 1 when current price is lower than bet price", () => {
         const bet = { ...mockBet, bet: CRYPTO_BET.DOWN, cryptoPrice: 45000 };
         const currentPrice = 44000;
 
-        expect(wasBetSuccess(bet, currentPrice)).toBe(true);
+        expect(getBetPoints(bet, currentPrice)).toBe(1);
       });
 
-      it("should return false when current price is higher than bet price", () => {
+      it("should return -1 when current price is higher than bet price", () => {
         const bet = { ...mockBet, bet: CRYPTO_BET.DOWN, cryptoPrice: 45000 };
         const currentPrice = 46000;
 
-        expect(wasBetSuccess(bet, currentPrice)).toBe(false);
+        expect(getBetPoints(bet, currentPrice)).toBe(-1);
       });
 
-      it("should return false when current price equals bet price", () => {
+      it("should return 0 when current price equals bet price", () => {
         const bet = { ...mockBet, bet: CRYPTO_BET.DOWN, cryptoPrice: 45000 };
         const currentPrice = 45000;
 
-        expect(wasBetSuccess(bet, currentPrice)).toBe(false);
+        expect(getBetPoints(bet, currentPrice)).toBe(0);
       });
     });
 
@@ -120,29 +124,51 @@ describe("checkBetData", () => {
         const bet = { ...mockBet, bet: CRYPTO_BET.UP, cryptoPrice: 45000.5 };
         const currentPrice = 45000.51;
 
-        expect(wasBetSuccess(bet, currentPrice)).toBe(true);
+        expect(getBetPoints(bet, currentPrice)).toBe(1);
       });
 
       it("should handle decimal prices for DOWN bets", () => {
         const bet = { ...mockBet, bet: CRYPTO_BET.DOWN, cryptoPrice: 45000.5 };
         const currentPrice = 45000.49;
 
-        expect(wasBetSuccess(bet, currentPrice)).toBe(true);
+        expect(getBetPoints(bet, currentPrice)).toBe(1);
       });
 
       it("should handle very small price differences", () => {
         const bet = { ...mockBet, bet: CRYPTO_BET.UP, cryptoPrice: 45000.001 };
         const currentPrice = 45000.002;
 
-        expect(wasBetSuccess(bet, currentPrice)).toBe(true);
+        expect(getBetPoints(bet, currentPrice)).toBe(1);
       });
 
       it("should handle zero prices", () => {
         const bet = { ...mockBet, bet: CRYPTO_BET.UP, cryptoPrice: 0 };
         const currentPrice = 1;
 
-        expect(wasBetSuccess(bet, currentPrice)).toBe(true);
+        expect(getBetPoints(bet, currentPrice)).toBe(1);
       });
+    });
+  });
+
+  describe("shouldUpdateScore function", () => {
+    it("should return true when bet points is positive", () => {
+      expect(shouldUpdateScore(1, 10)).toBe(true);
+    });
+
+    it("should return true when bet points is negative and current score is positive", () => {
+      expect(shouldUpdateScore(-1, 5)).toBe(true);
+    });
+
+    it("should return false when bet points is negative and current score is 0", () => {
+      expect(shouldUpdateScore(-1, 0)).toBe(false);
+    });
+
+    it("should return false when bet points is 0", () => {
+      expect(shouldUpdateScore(0, 10)).toBe(false);
+    });
+
+    it("should return false when bet points is 0 and current score is 0", () => {
+      expect(shouldUpdateScore(0, 0)).toBe(false);
     });
   });
 });

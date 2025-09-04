@@ -1,7 +1,7 @@
 import { screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { renderWithIntl } from "~/tests/test-utils";
+import { renderWithIntl } from "~/tests/testUtils";
 import BetSection from "../BetSection";
 import { mockBetDescriptionEmpty } from "./mockedData";
 import { CRYPTO_BET } from "~/modules/Bets/constants/bets";

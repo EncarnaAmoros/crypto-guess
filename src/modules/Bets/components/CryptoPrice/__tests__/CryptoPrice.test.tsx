@@ -1,6 +1,6 @@
 import { screen } from "@testing-library/react";
 import { describe, it, expect } from "vitest";
-import { renderWithIntl } from "~/tests/test-utils";
+import { renderWithIntl } from "~/tests/testUtils";
 import CryptoPrice from "../CryptoPrice";
 import { CURRENCY } from "~/modules/Bets/types/currency";
 

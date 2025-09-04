@@ -7,7 +7,8 @@ import useSessionStore from "~/modules/Auth/store/useSessionStore";
 import useGeneralLayoutStore from "~/modules/Layout/hooks/useGeneralLayoutStore";
 import {
   isBetReadyToResolve,
-  wasBetSuccess,
+  shouldUpdateScore,
+  getBetPoints,
 } from "~/modules/Bets/utils/checkBetData";
 import {
   getUserScore,
@@ -20,11 +21,12 @@ const useActiveBets = (intervalMs = 1000) => {
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
   const session = useSessionStore((state) => state.session);
-  const { bitcoinPrice, userBets, setUserBets } = useBetStore(
+  const { bitcoinPrice, userBets, setUserBets, setUserScore } = useBetStore(
     useShallow((state) => ({
       bitcoinPrice: state.bitcoinPrice,
       userBets: state.userBets,
       setUserBets: state.setUserBets,
+      setUserScore: state.setUserScore,
     }))
   );
   const setGeneralError = useGeneralLayoutStore(
@@ -32,9 +34,10 @@ const useActiveBets = (intervalMs = 1000) => {
   );
 
   const updateBetAndScore = useCallback(
-    async (ongoingBet: UserBet, betSuccess: boolean) => {
+    async (ongoingBet: UserBet, betPoints: number) => {
       if (!session?.user?.id) return;
 
+      const betSuccess = betPoints > 0 || betPoints === 0;
       const updateResponse = await updateUserBetSuccess(
         ongoingBet.id,
         betSuccess
@@ -49,31 +52,39 @@ const useActiveBets = (intervalMs = 1000) => {
       const response = await getUserScore(session?.user?.id);
       if (response.error) return;
 
-      const newScore = betSuccess
-        ? response.data.score + 1
-        : response.data.score - 1;
+      if (shouldUpdateScore(betPoints, response.data.score)) {
+        const newScore = response.data.score + betPoints;
+        const newScoreResponse = await upsertUserScore(
+          session?.user?.id,
+          newScore
+        );
 
-      if (newScore < 0) return;
-      upsertUserScore(session?.user?.id, newScore);
+        if (newScoreResponse.error)
+          return setGeneralError(
+            intl.formatMessage({ id: newScoreResponse.messageKey })
+          );
+
+        setUserScore(newScoreResponse.data);
+      }
     },
-    [intl, session?.user?.id, setGeneralError, setUserBets]
+    [intl, session?.user?.id, setGeneralError, setUserBets, setUserScore]
   );
 
   const checkAndUpdateBets = useCallback(async () => {
     if (!session?.user?.id || !userBets.length) return;
 
-    const ongoingBet = userBets.find((bet) => bet.success === null);
+    const ongoingBet = userBets.find((bet) => bet.success == null);
     if (!ongoingBet) return;
 
     if (!isBetReadyToResolve(ongoingBet)) return;
 
-    const betSuccess = wasBetSuccess(ongoingBet, bitcoinPrice);
-    updateBetAndScore(ongoingBet, betSuccess);
+    const betPoints = getBetPoints(ongoingBet, bitcoinPrice);
+    updateBetAndScore(ongoingBet, betPoints);
   }, [session?.user?.id, userBets, bitcoinPrice, updateBetAndScore]);
 
   useEffect(() => {
     const currentBetOnGoing =
-      userBets.length > 0 && userBets?.find((bet) => bet.success === null);
+      userBets.length > 0 && !!userBets?.find((bet) => bet.success == null);
 
     // Start checking every second the bet result
     if (currentBetOnGoing) {

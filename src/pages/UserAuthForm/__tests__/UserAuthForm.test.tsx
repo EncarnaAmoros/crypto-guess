@@ -2,7 +2,7 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 import type { Mock } from "vitest";
 import { screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { renderWithIntl } from "~/tests/test-utils";
+import { renderWithIntl } from "~/tests/testUtils";
 import UserAuthForm from "../UserAuthForm";
 import { AUTH_FORM_TYPES } from "~/modules/Auth/types/authForm";
 import useUserAuthForm from "~/pages/UserAuthForm/useUserAuthForm";

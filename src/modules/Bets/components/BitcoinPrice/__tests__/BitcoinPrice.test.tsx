@@ -1,6 +1,6 @@
 import { screen } from "@testing-library/react";
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { renderWithIntl } from "~/tests/test-utils";
+import { renderWithIntl } from "~/tests/testUtils";
 import BitcoinPrice from "../BitcoinPrice";
 import * as useBetStore from "~/modules/Bets/store/useBetStore";
 import * as useBTCPrice from "~/modules/Bets/service/useCryptoStream";

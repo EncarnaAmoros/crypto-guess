@@ -1,16 +1,18 @@
 import { screen, waitFor } from "@testing-library/react";
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { renderWithIntl } from "~/tests/test-utils";
+import { renderWithIntl } from "~/tests/testUtils";
 import { GENERAL_ERROR } from "~/tests/constants/errorMessages";
 import { UserScore } from "~/modules/Bets/types/userBets";
 import UserBetScore from "../UserBetScore";
 import * as betsService from "~/modules/Bets/service/betsService";
 import * as useSessionStore from "~/modules/Auth/store/useSessionStore";
 import * as useGeneralLayoutStore from "~/modules/Layout/hooks/useGeneralLayoutStore";
+import * as useBetStore from "~/modules/Bets/store/useBetStore";
 
 vi.mock("~/modules/Bets/service/betsService");
 vi.mock("~/modules/Auth/store/useSessionStore");
 vi.mock("~/modules/Layout/hooks/useGeneralLayoutStore");
+vi.mock("~/modules/Bets/store/useBetStore");
 
 const userDefaultScore: UserScore = {
   id: "score-id",
@@ -27,9 +29,11 @@ const defaultUser = {
 
 describe("UserBetScore", () => {
   const mockSetGeneralError = vi.fn();
+  const mockSetUserScore = vi.fn();
   const mockGetUserScore = vi.mocked(betsService.getUserScore);
   const mockUseSessionStore = vi.mocked(useSessionStore.default);
   const mockUseGeneralLayoutStore = vi.mocked(useGeneralLayoutStore.default);
+  const mockUseBetStore = vi.mocked(useBetStore.default);
 
   beforeEach(() => {
     vi.clearAllMocks();
@@ -37,6 +41,10 @@ describe("UserBetScore", () => {
     mockUseGeneralLayoutStore.mockReturnValue(mockSetGeneralError);
     mockUseSessionStore.mockReturnValue({
       user: defaultUser,
+    });
+    mockUseBetStore.mockReturnValue({
+      userScore: defaultUser,
+      setUserScore: mockSetUserScore,
     });
   });
 
@@ -54,6 +62,10 @@ describe("UserBetScore", () => {
     mockGetUserScore.mockResolvedValue({
       error: false,
       data: { ...userDefaultScore, score: 15 },
+    });
+    mockUseBetStore.mockReturnValue({
+      userScore: { ...userDefaultScore, score: 15 },
+      setUserScore: mockSetUserScore,
     });
 
     renderWithIntl(<UserBetScore />);
@@ -82,6 +94,10 @@ describe("UserBetScore", () => {
     mockGetUserScore.mockResolvedValue({
       error: false,
       data: { ...userDefaultScore, score: 0 },
+    });
+    mockUseBetStore.mockReturnValue({
+      userScore: { ...userDefaultScore, score: 0 },
+      setUserScore: mockSetUserScore,
     });
 
     renderWithIntl(<UserBetScore />);

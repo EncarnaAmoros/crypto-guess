@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
-import { renderHookWithIntl } from "~/tests/test-utils";
+import { renderHookWithIntl } from "~/tests/testUtils";
 import useActiveBets from "../useActiveBets";
 import { GENERAL_ERROR } from "~/tests/constants/errorMessages";
 import { defaultUser, mockedBet } from "./mockedData";
@@ -18,6 +18,7 @@ vi.mock("~/modules/Bets/utils/checkBetData");
 describe("useActiveBets", () => {
   const mockSetGeneralError = vi.fn();
   const mockSetUserBets = vi.fn();
+  const mockSetUserScore = vi.fn();
   const mockUpdateUserBetSuccess = vi.mocked(betsService.updateUserBetSuccess);
   const mockGetUserScore = vi.mocked(betsService.getUserScore);
   const mockUpsertUserScore = vi.mocked(betsService.upsertUserScore);
@@ -25,7 +26,8 @@ describe("useActiveBets", () => {
   const mockUseSessionStore = vi.mocked(useSessionStore.default);
   const mockUseGeneralLayoutStore = vi.mocked(useGeneralLayoutStore.default);
   const mockIsBetReadyToResolve = vi.mocked(checkBetData.isBetReadyToResolve);
-  const mockWasBetSuccess = vi.mocked(checkBetData.wasBetSuccess);
+  const mockGetBetPoints = vi.mocked(checkBetData.getBetPoints);
+  const mockShouldUpdateScore = vi.mocked(checkBetData.shouldUpdateScore);
 
   beforeEach(() => {
     vi.clearAllMocks();
@@ -48,6 +50,7 @@ describe("useActiveBets", () => {
       userBets: [],
       setUserBets: mockSetUserBets,
       setBitcoinPrice: vi.fn(),
+      setUserScore: mockSetUserScore,
     });
   });
 
@@ -70,6 +73,7 @@ describe("useActiveBets", () => {
       userBets: [ongoingBet],
       setUserBets: mockSetUserBets,
       setBitcoinPrice: vi.fn(),
+      setUserScore: mockSetUserScore,
     });
 
     const setIntervalSpy = vi.spyOn(global, "setInterval");
@@ -86,6 +90,7 @@ describe("useActiveBets", () => {
       userBets: [{ ...mockedBet, success: null }],
       setUserBets: mockSetUserBets,
       setBitcoinPrice: vi.fn(),
+      setUserScore: mockSetUserScore,
     });
 
     const { rerender } = renderHookWithIntl(() => useActiveBets());
@@ -95,6 +100,7 @@ describe("useActiveBets", () => {
       userBets: [],
       setUserBets: mockSetUserBets,
       setBitcoinPrice: vi.fn(),
+      setUserScore: mockSetUserScore,
     });
 
     rerender();
@@ -110,6 +116,7 @@ describe("useActiveBets", () => {
       userBets: [{ ...mockedBet, success: null }],
       setUserBets: mockSetUserBets,
       setBitcoinPrice: vi.fn(),
+      setUserScore: mockSetUserScore,
     });
 
     renderHookWithIntl(() => useActiveBets());
@@ -136,6 +143,7 @@ describe("useActiveBets", () => {
       userBets: [ongoingBet],
       setUserBets: mockSetUserBets,
       setBitcoinPrice: vi.fn(),
+      setUserScore: mockSetUserScore,
     });
     mockIsBetReadyToResolve.mockReturnValue(false);
 
@@ -155,9 +163,11 @@ describe("useActiveBets", () => {
       userBets: [ongoingBet],
       setUserBets: mockSetUserBets,
       setBitcoinPrice: vi.fn(),
+      setUserScore: mockSetUserScore,
     });
     mockIsBetReadyToResolve.mockReturnValue(true);
-    mockWasBetSuccess.mockReturnValue(true);
+    mockGetBetPoints.mockReturnValue(1);
+    mockShouldUpdateScore.mockReturnValue(true);
     mockUpdateUserBetSuccess.mockResolvedValue({
       error: false,
       data: updatedBets,
@@ -191,10 +201,12 @@ describe("useActiveBets", () => {
       userBets: [ongoingBet],
       setUserBets: mockSetUserBets,
       setBitcoinPrice: vi.fn(),
+      setUserScore: mockSetUserScore,
     });
 
     mockIsBetReadyToResolve.mockReturnValue(true);
-    mockWasBetSuccess.mockReturnValue(false);
+    mockGetBetPoints.mockReturnValue(-1);
+    mockShouldUpdateScore.mockReturnValue(true);
     mockUpdateUserBetSuccess.mockResolvedValue({
       error: false,
       data: updatedBets,
@@ -228,9 +240,11 @@ describe("useActiveBets", () => {
       userBets: [ongoingBet],
       setUserBets: mockSetUserBets,
       setBitcoinPrice: vi.fn(),
+      setUserScore: mockSetUserScore,
     });
     mockIsBetReadyToResolve.mockReturnValue(true);
-    mockWasBetSuccess.mockReturnValue(false);
+    mockGetBetPoints.mockReturnValue(-1);
+    mockShouldUpdateScore.mockReturnValue(false);
     mockUpdateUserBetSuccess.mockResolvedValue({
       error: false,
       data: updatedBets,
@@ -263,9 +277,11 @@ describe("useActiveBets", () => {
       userBets: [ongoingBet],
       setUserBets: mockSetUserBets,
       setBitcoinPrice: vi.fn(),
+      setUserScore: mockSetUserScore,
     });
     mockIsBetReadyToResolve.mockReturnValue(true);
-    mockWasBetSuccess.mockReturnValue(true);
+    mockGetBetPoints.mockReturnValue(1);
+    mockShouldUpdateScore.mockReturnValue(true);
     mockUpdateUserBetSuccess.mockResolvedValue({
       error: true,
       messageKey: "general.error",
@@ -287,9 +303,11 @@ describe("useActiveBets", () => {
       userBets: [ongoingBet],
       setUserBets: mockSetUserBets,
       setBitcoinPrice: vi.fn(),
+      setUserScore: mockSetUserScore,
     });
     mockIsBetReadyToResolve.mockReturnValue(true);
-    mockWasBetSuccess.mockReturnValue(true);
+    mockGetBetPoints.mockReturnValue(1);
+    mockShouldUpdateScore.mockReturnValue(true);
     mockUpdateUserBetSuccess.mockResolvedValue({
       error: false,
       data: updatedBets,
@@ -315,6 +333,7 @@ describe("useActiveBets", () => {
       userBets: [ongoingBet],
       setUserBets: mockSetUserBets,
       setBitcoinPrice: vi.fn(),
+      setUserScore: mockSetUserScore,
     });
 
     const clearIntervalSpy = vi.spyOn(global, "clearInterval");

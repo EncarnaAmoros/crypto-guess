@@ -1,6 +1,6 @@
 import { waitFor } from "@testing-library/react";
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { renderHookWithIntl } from "~/tests/test-utils";
+import { renderHookWithIntl } from "~/tests/testUtils";
 import useBetSection from "../useBetSection";
 import { GENERAL_ERROR } from "~/tests/constants/errorMessages";
 import { CRYPTO_BET } from "~/modules/Bets/constants/bets";
@@ -24,6 +24,7 @@ vi.mock("~/modules/Layout/hooks/useGeneralLayoutStore");
 describe("useBetSection", () => {
   const mockSetGeneralError = vi.fn();
   const mockSetUserBets = vi.fn();
+  const mockSetUserScore = vi.fn();
   const mockGetUserBets = vi.mocked(betsService.getUserBets);
   const mockCreateUserBet = vi.mocked(betsService.createUserBet);
   const mockUseBetStore = vi.mocked(useBetStore.default);
@@ -40,6 +41,7 @@ describe("useBetSection", () => {
       userBets: [],
       setUserBets: mockSetUserBets,
       setBitcoinPrice: vi.fn(),
+      setUserScore: mockSetUserScore,
     });
     mockGetUserBets.mockResolvedValue({
       error: false,
@@ -227,16 +229,12 @@ describe("useBetSection", () => {
     const completedBet = { ...mockedBet, id: "completed", success: true };
     const ongoingBet = { ...mockedBet, id: "ongoing", success: undefined };
 
-    mockUseBetStore.mockImplementation((selector) => {
-      if (typeof selector === "function") {
-        return selector({
-          bitcoinPrice: 45000,
-          userBets: [completedBet, ongoingBet],
-          setUserBets: mockSetUserBets,
-          setBitcoinPrice: vi.fn(),
-        });
-      }
-      return 45000;
+    mockUseBetStore.mockReturnValue({
+      bitcoinPrice: 45000,
+      userBets: [completedBet, ongoingBet],
+      setUserBets: mockSetUserBets,
+      setBitcoinPrice: vi.fn(),
+      setUserScore: mockSetUserScore,
     });
 
     const { result } = renderHookWithIntl(() => useBetSection());

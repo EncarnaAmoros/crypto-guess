@@ -1,10 +1,8 @@
 import { useEffect } from "react";
 import { useIntl } from "react-intl";
+import { GET_BTC_PRICE_URL } from "~/modules/Bets/constants/bets";
 import useBetStore from "~/modules/Bets/store/useBetStore";
 import useGeneralLayoutStore from "~/modules/Layout/hooks/useGeneralLayoutStore";
-
-const GET_BTC_PRICE_URL =
-  "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd";
 
 const useBTCPrice = (intervalMs = 15000) => {
   const intl = useIntl();
