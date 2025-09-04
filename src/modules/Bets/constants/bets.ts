@@ -8,4 +8,4 @@ export enum CRYPTO_BET {
   DOWN = "DOWN",
 }
 
-export const BET_TIME = 60 * 100; //0;
+export const BET_TIME = 60 * 1000;
