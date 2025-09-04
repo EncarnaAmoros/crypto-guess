@@ -3,7 +3,7 @@ import react from "@vitejs/plugin-react";
 import path from "path";
 
 // https://vite.dev/config/
-export default defineConfig({
+export default defineConfig(({ mode }) => ({
   plugins: [react()],
   resolve: {
     alias: {
@@ -20,4 +20,15 @@ export default defineConfig({
       },
     },
   },
-});
+  define:
+    mode === "test"
+      ? {
+          "import.meta.env.VITE_SUPABASE_URL": JSON.stringify(
+            "http://mocksupabaseurl"
+          ),
+          "import.meta.env.VITE_SUPABASE_ANON_KEY": JSON.stringify(
+            "mocksupabaseanonkey"
+          ),
+        }
+      : {},
+}));
