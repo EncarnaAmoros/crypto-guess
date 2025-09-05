@@ -31,7 +31,7 @@ describe("BitcoinPrice", () => {
     renderWithIntl(<BitcoinPrice />);
 
     expect(screen.getByText("Bitcoin:")).toBeVisible();
-    expect(screen.getByText("45000 $")).toBeVisible();
+    expect(screen.getByText("45,000 $")).toBeVisible();
     expect(screen.queryByRole("progressbar")).not.toBeInTheDocument();
   });
 
@@ -40,7 +40,7 @@ describe("BitcoinPrice", () => {
 
     renderWithIntl(<BitcoinPrice />);
 
-    expect(screen.getByText("45000.99 $")).toBeVisible();
+    expect(screen.getByText("45,000.99 $")).toBeVisible();
   });
 
   it("should call useBTCPrice hook to fetch data", () => {

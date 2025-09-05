@@ -1,7 +1,7 @@
 import { useIntl } from "react-intl";
 import { AccessTime } from "@mui/icons-material";
 import { Chip } from "@mui/material";
-import useBetTimer from "~/modules/Bets/hooks/useBetTimer";
+import useBetTimer from "~/modules/Bets/components/BetTimer/useBetTimer";
 
 import styles from "./BetTimer.module.scss";
 

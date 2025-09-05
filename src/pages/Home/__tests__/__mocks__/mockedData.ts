@@ -55,16 +55,6 @@ export const mockUserScore: UserScore = {
   updatedAt: new Date(),
 };
 
-export const mockSupabaseBets = mockUserBets.map((bet) => ({
-  id: bet.id,
-  user_id: bet.userId,
-  bet: bet.bet,
-  crypto_price: bet.cryptoPrice,
-  success: bet.success,
-  created_at: bet.createdAt.toISOString(),
-  updated_at: bet.updatedAt.toISOString(),
-}));
-
 export const mockSupabaseScore = {
   id: mockUserScore.id,
   user_id: mockUserScore.userId,

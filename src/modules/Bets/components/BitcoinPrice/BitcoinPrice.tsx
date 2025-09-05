@@ -1,4 +1,4 @@
-import { CURRENCY } from "~/modules/Bets/types/currency";
+import { CURRENCY } from "~/modules/Bets/constants/currency";
 import useBetStore from "~/modules/Bets/store/useBetStore";
 import useBTCPrice from "~/modules/Bets/service/useCryptoStream";
 import { CryptoPrice } from "~/modules/Bets/components";

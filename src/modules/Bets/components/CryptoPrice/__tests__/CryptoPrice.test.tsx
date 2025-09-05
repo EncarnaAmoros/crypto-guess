@@ -2,7 +2,7 @@ import { screen } from "@testing-library/react";
 import { describe, it, expect } from "vitest";
 import { renderWithIntl } from "~/tests/testUtils";
 import CryptoPrice from "../CryptoPrice";
-import { CURRENCY } from "~/modules/Bets/types/currency";
+import { CURRENCY } from "~/modules/Bets/constants/currency";
 
 describe("CryptoPrice", () => {
   const defaultProps = {
@@ -22,7 +22,7 @@ describe("CryptoPrice", () => {
     renderWithIntl(<CryptoPrice {...defaultProps} />);
 
     expect(screen.getByText("Bitcoin:")).toBeVisible();
-    expect(screen.getByText("45000 $")).toBeVisible();
+    expect(screen.getByText("45,000 $")).toBeVisible();
   });
 
   it("should render with EUR currency", () => {
@@ -30,7 +30,7 @@ describe("CryptoPrice", () => {
       <CryptoPrice {...defaultProps} currency={CURRENCY.EUR} price={38000} />
     );
 
-    expect(screen.getByText("38000 €")).toBeVisible();
+    expect(screen.getByText("38,000 €")).toBeVisible();
   });
 
   it("should render with different crypto name", () => {
@@ -39,7 +39,7 @@ describe("CryptoPrice", () => {
     );
 
     expect(screen.getByText("Ethereum:")).toBeVisible();
-    expect(screen.getByText("3000 $")).toBeVisible();
+    expect(screen.getByText("3,000 $")).toBeVisible();
   });
 
   it("should render Bitcoin icon", () => {
@@ -58,6 +58,6 @@ describe("CryptoPrice", () => {
   it("should handle decimal prices", () => {
     renderWithIntl(<CryptoPrice {...defaultProps} price={45000.99} />);
 
-    expect(screen.getByText("45000.99 $")).toBeVisible();
+    expect(screen.getByText("45,000.99 $")).toBeVisible();
   });
 });

@@ -1,8 +1,8 @@
-import { CURRENCY } from "~/modules/Bets/types/currency";
-import CurrencyBitcoinIcon from "@mui/icons-material/CurrencyBitcoin";
+import { useIntl } from "react-intl";
 import { CircularProgress } from "@mui/material";
-import { InfoCard } from "~/components";
-
+import { CurrencyBitcoin as CurrencyBitcoinIcon } from "@mui/icons-material";
+import InfoCard from "~/components/InfoCard/InfoCard";
+import { CURRENCY } from "~/modules/Bets/constants/currency";
 import styles from "./CryptoPrice.module.scss";
 
 interface CryptoPriceProps {
@@ -18,6 +18,15 @@ const CryptoPrice = ({
   currency,
   loading,
 }: CryptoPriceProps) => {
+  const intl = useIntl();
+  const formatedPrice = parseFloat(price.toFixed(2)).toLocaleString(
+    intl.locale,
+    {
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 2,
+    }
+  );
+
   return (
     <InfoCard
       icon={<CurrencyBitcoinIcon className={styles.cryptoPrice__icon} />}
@@ -31,7 +40,7 @@ const CryptoPrice = ({
           </div>
         ) : (
           <div className={styles.cryptoPrice__price}>
-            {`${price} ${currency}`}
+            {`${formatedPrice} ${currency}`}
           </div>
         )
       }

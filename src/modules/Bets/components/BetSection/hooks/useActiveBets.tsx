@@ -1,10 +1,10 @@
 import { useEffect, useCallback, useRef } from "react";
 import { useShallow } from "zustand/shallow";
-import { useIntl } from "react-intl";
 import { UserBet } from "~/modules/Bets/types/userBets";
-import useBetStore from "~/modules/Bets/store/useBetStore";
+import useBetNotifications from "./useBetNotifications";
+import { useErrorHandler } from "~/modules/Layout/hooks/useErrorHandler";
 import useSessionStore from "~/modules/Auth/store/useSessionStore";
-import useGeneralLayoutStore from "~/modules/Layout/hooks/useGeneralLayoutStore";
+import useBetStore from "~/modules/Bets/store/useBetStore";
 import {
   isBetReadyToResolve,
   shouldUpdateScore,
@@ -19,10 +19,11 @@ import {
 // If there is an ongoing bet, check every second the bet result
 // When the bet is resolved, update the bet and score
 const useActiveBets = (intervalMs = 1000) => {
-  const intl = useIntl();
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
-
   const session = useSessionStore((state) => state.session);
+  const { notifyScoreChange } = useBetNotifications();
+  const { handleError } = useErrorHandler();
+
   const { bitcoinPrice, userBets, setUserBets, setUserScore } = useBetStore(
     useShallow((state) => ({
       bitcoinPrice: state.bitcoinPrice,
@@ -31,25 +32,12 @@ const useActiveBets = (intervalMs = 1000) => {
       setUserScore: state.setUserScore,
     }))
   );
-  const setGeneralError = useGeneralLayoutStore(
-    (state) => state.setGeneralError
-  );
 
-  const updateBetAndScore = useCallback(
-    async (ongoingBet: UserBet, betPoints: number) => {
+  const hasOngoingBet = !!userBets?.find((bet) => bet.success == null);
+
+  const updateScore = useCallback(
+    async (betPoints: number) => {
       if (!session?.user?.id) return;
-
-      const betSuccess = betPoints > 0 || betPoints === 0;
-      const updateResponse = await updateUserBetSuccess(
-        ongoingBet.id,
-        betSuccess
-      );
-      if (updateResponse.error)
-        return setGeneralError(
-          intl.formatMessage({ id: updateResponse.messageKey })
-        );
-
-      setUserBets(updateResponse.data);
 
       const response = await getUserScore(session?.user?.id);
       if (response.error) return;
@@ -61,14 +49,30 @@ const useActiveBets = (intervalMs = 1000) => {
           newScore
         );
         if (newScoreResponse.error)
-          return setGeneralError(
-            intl.formatMessage({ id: newScoreResponse.messageKey })
-          );
+          return handleError(newScoreResponse.messageKey);
 
         setUserScore(newScoreResponse.data);
+        notifyScoreChange(betPoints);
       }
     },
-    [intl, session?.user?.id, setGeneralError, setUserBets, setUserScore]
+    [session?.user?.id, handleError, setUserScore, notifyScoreChange]
+  );
+
+  const updateBetAndScore = useCallback(
+    async (ongoingBet: UserBet, betPoints: number) => {
+      if (!session?.user?.id) return;
+
+      const betSuccess = betPoints > 0 || betPoints === 0;
+      const updateResponse = await updateUserBetSuccess(
+        ongoingBet.id,
+        betSuccess
+      );
+      if (updateResponse.error) return handleError(updateResponse.messageKey);
+
+      setUserBets(updateResponse.data);
+      updateScore(betPoints);
+    },
+    [session?.user?.id, handleError, setUserBets, updateScore]
   );
 
   const checkAndUpdateOnGoingBets = useCallback(async () => {
@@ -84,10 +88,7 @@ const useActiveBets = (intervalMs = 1000) => {
   }, [session?.user?.id, userBets, bitcoinPrice, updateBetAndScore]);
 
   useEffect(() => {
-    const currentBetOnGoing =
-      userBets.length > 0 && !!userBets?.find((bet) => bet.success == null);
-
-    if (currentBetOnGoing) {
+    if (hasOngoingBet) {
       intervalRef.current = setInterval(() => {
         checkAndUpdateOnGoingBets();
       }, intervalMs);
@@ -102,7 +103,7 @@ const useActiveBets = (intervalMs = 1000) => {
         intervalRef.current = null;
       }
     };
-  }, [userBets, checkAndUpdateOnGoingBets, intervalMs]);
+  }, [hasOngoingBet, checkAndUpdateOnGoingBets, intervalMs]);
 };
 
 export default useActiveBets;

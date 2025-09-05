@@ -5,7 +5,7 @@ import {
   SUPABASE_V1_URL,
 } from "~/services/constants/dbService";
 import {
-  mockSupabaseBets,
+  mockUserBets,
   mockSupabaseScore,
   mockOngoingBet,
   mockUserScore,
@@ -24,12 +24,12 @@ export const betsRequestHandler = [
         return HttpResponse.json([], { status: 200 });
       }
 
-      return HttpResponse.json(mockSupabaseBets, { status: 200 });
+      return HttpResponse.json(mockUserBets, { status: 200 });
     }
   ),
 
   http.post(`${SUPABASE_URL}${SUPABASE_V1_URL}${USER_BETS_TABLE}`, async () => {
-    return HttpResponse.json([...mockSupabaseBets, mockOngoingBet], {
+    return HttpResponse.json([...mockUserBets, mockOngoingBet], {
       status: 201,
     });
   }),

@@ -3,7 +3,7 @@ import { useShallow } from "zustand/shallow";
 import useGeneralLayoutStore from "~/modules/Layout/hooks/useGeneralLayoutStore";
 import MainSideBar from "./components/MainSideBar/MainSideBar";
 import Header from "./components/Header/Header";
-import { InfoDialog } from "~/components";
+import { InfoDialog, Notification } from "~/components";
 
 import styles from "./GeneralLayout.module.scss";
 
@@ -30,6 +30,8 @@ const GeneralLayout = () => {
         onClose={() => setGeneralError("")}
         message={generalError}
       />
+
+      <Notification />
     </div>
   );
 };
