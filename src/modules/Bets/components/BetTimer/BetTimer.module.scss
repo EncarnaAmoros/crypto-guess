@@ -1,9 +1,18 @@
+@use "~/assets/css/variables.scss";
+
 .betTimer {
   margin: 8px 0;
-  font-weight: 600;
+  font-size: 14px !important;
+  padding: 8px 5px !important;
+  height: fit-content !important;
+  border-radius: 43px !important;
+  background-color: variables.$color-info-light !important;
+  color: white !important;
+  border: none !important;
 
-  &.MuiChip-colorError {
+  &--onTimeLimit {
     animation: pulse 1s infinite;
+    background-color: variables.$color-info !important;
   }
 }
 

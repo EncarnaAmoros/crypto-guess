@@ -1,4 +1,5 @@
 export enum ROUTES {
   HOME = "/",
-  AUTH_FORM = "auth-form",
+  STATISTICS = "/statistics",
+  AUTH_FORM = "/auth-form",
 }

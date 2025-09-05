@@ -1,0 +1,18 @@
+.statistics {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  padding: 20px;
+
+  &__title {
+    font-size: 22px;
+    font-weight: 600;
+    font-family: "Source Sans 3", sans-serif;
+  }
+
+  &__description {
+    font-size: 14px;
+    font-weight: 400;
+    font-family: "Source Sans 3", sans-serif;
+  }
+}

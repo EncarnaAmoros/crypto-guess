@@ -2,12 +2,15 @@ import { Navigate, RouteObject, useRoutes } from "react-router-dom";
 import { ROUTES } from "../routes";
 import { GeneralLayout } from "~/modules/Layout/components";
 import useSessionStore from "~/modules/Auth/store/useSessionStore";
-import { Home, UserAuthForm } from "~/pages";
+import { Home, UserAuthForm, Statistics } from "~/pages";
 
 const PrivateRoutes: RouteObject[] = [
   {
     element: <GeneralLayout />,
-    children: [{ path: ROUTES.HOME, element: <Home /> }],
+    children: [
+      { path: ROUTES.HOME, element: <Home /> },
+      { path: ROUTES.STATISTICS, element: <Statistics /> },
+    ],
   },
   { path: "*", element: <Navigate to={ROUTES.HOME} replace /> },
 ];
