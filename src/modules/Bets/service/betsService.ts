@@ -84,7 +84,9 @@ export const upsertUserScore = async (
 ): Promise<ServiceResponse<UserScore>> => {
   const { data, error } = await supabase
     .from(USER_SCORES_TABLE)
-    .upsert({ user_id: userId, score }, { onConflict: "user_id" });
+    .upsert({ user_id: userId, score }, { onConflict: "user_id" })
+    .select()
+    .single();
 
   if (error)
     return {
