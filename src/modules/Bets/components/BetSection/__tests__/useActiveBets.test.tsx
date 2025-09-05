@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { renderHookWithIntl } from "~/tests/testUtils";
-import useActiveBets from "../useActiveBets";
+import useActiveBets from "../hooks/useActiveBets";
 import { GENERAL_ERROR } from "~/tests/constants/errorMessages";
 import { defaultUser, mockedBet } from "./mockedData";
 import * as betsService from "~/modules/Bets/service/betsService";

@@ -3,7 +3,7 @@ import { Card, IconButton, ButtonGroup, Tooltip } from "@mui/material";
 import { ArrowUpward, ArrowDownward } from "@mui/icons-material";
 import { CRYPTO_BET } from "~/modules/Bets/constants/bets";
 import BetText from "./components/BetText/BetText";
-import useActiveBets from "./useActiveBets";
+import useActiveBets from "./hooks/useActiveBets";
 import useBetSection from "./useBetSection";
 
 import styles from "./BetSection.module.scss";

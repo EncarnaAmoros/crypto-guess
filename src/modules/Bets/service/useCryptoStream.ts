@@ -25,7 +25,7 @@ const useBTCPrice = (intervalMs = 15000) => {
         const data = await response.json();
 
         if (isMounted) {
-          setBitcoinPrice(data.bitcoin.usd.toFixed(2));
+          setBitcoinPrice(data.bitcoin.usd);
         }
       } catch {
         if (isMounted) {

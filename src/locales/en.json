@@ -22,5 +22,8 @@
   "signup.description": "Ready to predict crypto prices? Sign up to play",
   "user.already.exists": "Username already exists. Try with another username.",
   "user.not.found": "User not found. Try with another username.",
-  "username": "Username"
+  "username": "Username",
+  "notification.bet.score.increase": "Well played! +1 point  🚀",
+  "notification.bet.score.decrease": "Oops, -1 point  😵",
+  "notification.bet.score.equal": "Price stays the same… so does your score! 🤝"
 }

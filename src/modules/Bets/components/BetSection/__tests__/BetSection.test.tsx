@@ -9,10 +9,12 @@ import {
 } from "./mockedData";
 import { CRYPTO_BET } from "~/modules/Bets/constants/bets";
 import * as useBetSection from "../useBetSection";
-import * as useActiveBets from "../useActiveBets";
+import * as useActiveBets from "../hooks/useActiveBets";
+import * as useBetNotifications from "../hooks/useBetNotifications";
 
 vi.mock("../useBetSection");
-vi.mock("../useActiveBets");
+vi.mock("../hooks/useActiveBets");
+vi.mock("../hooks/useBetNotifications");
 
 const upButtonLabel = "Bet if the price will go up";
 const downButtonLabel = "Bet if the price will go down";
@@ -21,10 +23,12 @@ describe("BetSection", () => {
   const mockMakeBetHandler = vi.fn();
   const mockUseBetSection = vi.mocked(useBetSection.default);
   const mockUseActiveBets = vi.mocked(useActiveBets.default);
+  const mockUseBetNotifications = vi.mocked(useBetNotifications.default);
 
   beforeEach(() => {
     vi.clearAllMocks();
     mockUseActiveBets.mockReturnValue(undefined);
+    mockUseBetNotifications.mockReturnValue({ notifyScoreChange: vi.fn() });
   });
 
   it("should render bet description", () => {

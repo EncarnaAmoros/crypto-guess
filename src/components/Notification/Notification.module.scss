@@ -1,0 +1,50 @@
+@use "~/assets/css/variables.scss";
+
+.notification {
+  &__alert {
+    display: flex;
+    align-items: center;
+    padding: 12px 16px;
+    border-radius: 8px;
+    min-width: 250px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    font-weight: 500;
+
+    &--success {
+      background-color: variables.$color-success;
+      color: variables.$color-light;
+    }
+
+    &--error {
+      background-color: variables.$color-error;
+      color: variables.$color-light;
+    }
+
+    &--info {
+      background-color: variables.$color-info;
+      color: variables.$color-light;
+    }
+  }
+
+  &__icon {
+    margin-right: 8px;
+    font-size: 20px !important;
+  }
+
+  &__message {
+    flex: 1;
+    margin-right: 8px;
+    margin-top: 2px;
+  }
+
+  &__close {
+    cursor: pointer;
+    font-size: 18px !important;
+    opacity: 0.8;
+    transition: opacity 0.2s ease;
+
+    &:hover {
+      opacity: 1;
+    }
+  }
+}

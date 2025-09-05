@@ -1,5 +1,4 @@
-import { screen, act } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
+import { screen, fireEvent } from "@testing-library/react";
 import {
   describe,
   it,
@@ -11,14 +10,15 @@ import {
   vi,
 } from "vitest";
 import {
-  mockBitcoinPrice,
   mockBetDownLabel,
   mockBetUpLabel,
   mockUser,
+  betCreationTime,
 } from "./__mocks__/mockedData";
 import { renderWithIntl } from "~/tests/testUtils";
-import { server } from "./__mocks__/server";
 import * as useSessionStore from "~/modules/Auth/store/useSessionStore";
+import { BET_TIME } from "~/modules/Bets/constants/bets";
+import { server } from "./__mocks__/server";
 import Home from "../Home";
 
 vi.mock("~/modules/Auth/store/useSessionStore", () => ({
@@ -39,8 +39,15 @@ describe("Home Integration Tests", () => {
   beforeEach(() => {
     vi.clearAllMocks();
     vi.useFakeTimers({
-      toFake: ["setTimeout", "setInterval", "clearTimeout", "clearInterval"],
+      toFake: [
+        "setTimeout",
+        "setInterval",
+        "clearTimeout",
+        "clearInterval",
+        "Date",
+      ],
     });
+    vi.setSystemTime(betCreationTime);
     mockUseSessionStore.mockReturnValue({ user: mockUser });
   });
   afterEach(() => {
@@ -49,8 +56,7 @@ describe("Home Integration Tests", () => {
   });
   afterAll(() => server.close());
 
-  it.skip("should complete betting flow (up bet) and score update successfully", async () => {
-    const user = userEvent.setup();
+  it("should complete betting flow (up bet) and score update successfully", async () => {
     renderWithIntl(<Home />);
 
     const upButton = screen.getByLabelText(mockBetUpLabel);
@@ -58,23 +64,21 @@ describe("Home Integration Tests", () => {
 
     await vi.runOnlyPendingTimersAsync();
 
-    expect(
-      screen.getByText(`Bitcoin: ${mockBitcoinPrice + 1} $`)
-    ).toBeVisible();
-    expect(screen.getByText("Score:")).toBeVisible();
+    expect(screen.getByText(`45,001 $`)).toBeVisible();
     expect(screen.getByText("15")).toBeVisible();
     expect(upButton).not.toBeDisabled();
     expect(downButton).not.toBeDisabled();
 
-    act(async () => {
-      await user.click(upButton);
-      expect(upButton).toBeDisabled();
-      expect(downButton).toBeDisabled();
-    });
+    fireEvent.click(upButton);
     await vi.runOnlyPendingTimersAsync();
+
+    expect(upButton).toBeDisabled();
+    expect(downButton).toBeDisabled();
+
+    vi.advanceTimersByTime(BET_TIME);
+    await vi.runOnlyPendingTimersAsync();
+    expect(screen.getByText("16")).toBeVisible();
     expect(upButton).not.toBeDisabled();
     expect(downButton).not.toBeDisabled();
-
-    expect(screen.getByText("Score: 16")).toBeVisible();
   });
 });

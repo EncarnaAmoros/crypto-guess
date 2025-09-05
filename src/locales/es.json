@@ -22,5 +22,8 @@
   "signup.description": "¿Quieres empezar a predecir precios de criptomonedas? Regístrate para jugar.",
   "user.already.exists": "El nombre de usuario ya existe. Introduce otro nombre de usuario.",
   "user.not.found": "Usuario no encontrado. Introduce otro nombre de usuario.",
-  "username": "Nombre de usuario"
+  "username": "Nombre de usuario",
+  "notification.bet.score.increase": "¡Bien jugado! +1 punto  🚀",
+  "notification.bet.score.decrease": "Oops, -1 punto  😵",
+  "notification.bet.score.equal": "El precio se mantiene… ¡tu score también! 🤝"
 }
