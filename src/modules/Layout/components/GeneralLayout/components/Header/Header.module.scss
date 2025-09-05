@@ -5,10 +5,15 @@
   justify-content: space-between;
   align-items: center;
   border-radius: 12px;
-  background-color: variables.$color-surface;
+  background-color: variables.$color-surface-dark;
   border: 1px solid rgba(variables.$color-muted, 0.1);
   padding: 30px;
   box-sizing: border-box;
   height: 30px;
   width: 100%;
+
+  &__title {
+    font-family: "Source Sans 3", sans-serif;
+    font-size: 14px;
+  }
 }

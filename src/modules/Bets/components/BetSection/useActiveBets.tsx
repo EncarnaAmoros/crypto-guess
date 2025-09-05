@@ -16,6 +16,8 @@ import {
   upsertUserScore,
 } from "~/modules/Bets/service/betsService";
 
+// If there is an ongoing bet, check every second the bet result
+// When the bet is resolved, update the bet and score
 const useActiveBets = (intervalMs = 1000) => {
   const intl = useIntl();
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
@@ -58,7 +60,6 @@ const useActiveBets = (intervalMs = 1000) => {
           session?.user?.id,
           newScore
         );
-
         if (newScoreResponse.error)
           return setGeneralError(
             intl.formatMessage({ id: newScoreResponse.messageKey })
@@ -70,7 +71,7 @@ const useActiveBets = (intervalMs = 1000) => {
     [intl, session?.user?.id, setGeneralError, setUserBets, setUserScore]
   );
 
-  const checkAndUpdateBets = useCallback(async () => {
+  const checkAndUpdateOnGoingBets = useCallback(async () => {
     if (!session?.user?.id || !userBets.length) return;
 
     const ongoingBet = userBets.find((bet) => bet.success == null);
@@ -86,10 +87,9 @@ const useActiveBets = (intervalMs = 1000) => {
     const currentBetOnGoing =
       userBets.length > 0 && !!userBets?.find((bet) => bet.success == null);
 
-    // Start checking every second the bet result
     if (currentBetOnGoing) {
       intervalRef.current = setInterval(() => {
-        checkAndUpdateBets();
+        checkAndUpdateOnGoingBets();
       }, intervalMs);
     } else if (intervalRef.current) {
       clearInterval(intervalRef.current);
@@ -102,7 +102,7 @@ const useActiveBets = (intervalMs = 1000) => {
         intervalRef.current = null;
       }
     };
-  }, [userBets, checkAndUpdateBets, intervalMs]);
+  }, [userBets, checkAndUpdateOnGoingBets, intervalMs]);
 };
 
 export default useActiveBets;

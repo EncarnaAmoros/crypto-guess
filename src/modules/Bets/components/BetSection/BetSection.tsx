@@ -1,13 +1,8 @@
 import { useIntl } from "react-intl";
-import {
-  Card,
-  IconButton,
-  Typography,
-  ButtonGroup,
-  Tooltip,
-} from "@mui/material";
+import { Card, IconButton, ButtonGroup, Tooltip } from "@mui/material";
 import { ArrowUpward, ArrowDownward } from "@mui/icons-material";
 import { CRYPTO_BET } from "~/modules/Bets/constants/bets";
+import BetText from "./components/BetText/BetText";
 import useActiveBets from "./useActiveBets";
 import useBetSection from "./useBetSection";
 
@@ -16,16 +11,13 @@ import styles from "./BetSection.module.scss";
 const BetSection = () => {
   const intl = useIntl();
 
-  const { betTextDescription, currentBetOnGoing, makeBetHandler } =
-    useBetSection();
+  const { currentBetOnGoing, makeBetHandler } = useBetSection();
   useActiveBets();
 
   return (
     <Card variant="outlined" className={styles.betSection}>
       <div className={styles.betSection__description}>
-        <Typography variant="h6" className={styles.betSection__description}>
-          {betTextDescription}
-        </Typography>
+        <BetText />
       </div>
       <div className={styles.betSection__actions}>
         <ButtonGroup

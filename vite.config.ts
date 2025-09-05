@@ -7,7 +7,7 @@ export default defineConfig(({ mode }) => ({
   plugins: [react()],
   resolve: {
     alias: {
-      "~/": `${path.resolve("src")}/`,
+      "~": path.resolve(__dirname, "src"),
     },
   },
   test: {

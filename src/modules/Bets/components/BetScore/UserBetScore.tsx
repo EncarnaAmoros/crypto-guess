@@ -1,13 +1,15 @@
 import { useShallow } from "zustand/shallow";
 import { useCallback, useEffect, useState } from "react";
 import { useIntl } from "react-intl";
-import SportsScoreIcon from "@mui/icons-material/SportsScore";
+import StarIcon from "@mui/icons-material/Star";
 import { CircularProgress } from "@mui/material";
 import useGeneralLayoutStore from "~/modules/Layout/hooks/useGeneralLayoutStore";
 import { getUserScore as getUserScoreService } from "~/modules/Bets/service/betsService";
 import useSessionStore from "~/modules/Auth/store/useSessionStore";
 import useBetStore from "~/modules/Bets/store/useBetStore";
 import { InfoCard } from "~/components";
+
+import styles from "./UserBetScore.module.scss";
 
 const UserBetScore = () => {
   const intl = useIntl();
@@ -43,15 +45,15 @@ const UserBetScore = () => {
 
   return (
     <InfoCard
-      icon={<SportsScoreIcon />}
+      icon={<StarIcon className={styles.userBetScore__icon} />}
+      title={`${intl.formatMessage({ id: "score" })}:`}
       text={
         loadingUserScore ? (
-          <div>
-            {intl.formatMessage({ id: "score" })}:{" "}
-            <CircularProgress size={24} data-testid="loader" />
-          </div>
+          <CircularProgress size={24} data-testid="loader" />
         ) : (
-          `${intl.formatMessage({ id: "score" })}: ${userScore?.score ?? "-"}`
+          <div className={styles.userBetScore__score}>
+            {userScore?.score ?? "-"}
+          </div>
         )
       }
     />

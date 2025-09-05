@@ -7,14 +7,20 @@ import styles from "./InfoCard.module.scss";
 interface InfoCardProps {
   className?: string;
   icon?: ReactElement;
-  text?: ReactElement | string;
+  title: ReactElement | string;
+  text: ReactElement | string;
 }
 
-const InfoCard = ({ className, icon, text }: InfoCardProps) => {
+const InfoCard = ({ className, icon, title, text }: InfoCardProps) => {
   return (
     <Card variant="outlined" className={classNames(styles.infoCard, className)}>
-      {icon && <div className={styles.infoCard__icon}>{icon}</div>}
-      <Typography variant="h4" className={styles.cryptoPrice__name}>
+      <div className={styles.infoCard__title}>
+        {icon && <div className={styles.infoCard__titleIcon}>{icon}</div>}
+        <Typography variant="h4" className={styles.infoCard__titleText}>
+          {title}
+        </Typography>
+      </div>
+      <Typography variant="h4" className={styles.infoCard__text}>
         {text}
       </Typography>
     </Card>

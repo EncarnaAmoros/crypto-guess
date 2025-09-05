@@ -1,0 +1,7 @@
+@use "~/assets/css/variables.scss";
+
+.infoDialog :global(.MuiPaper-root) {
+  border: 1px solid rgba(variables.$color-muted, 0.1) !important;
+  border-radius: 12px !important;
+  background-color: variables.$color-orange-dark !important;
+}

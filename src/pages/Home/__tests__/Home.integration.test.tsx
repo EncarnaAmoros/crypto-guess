@@ -61,7 +61,8 @@ describe("Home Integration Tests", () => {
     expect(
       screen.getByText(`Bitcoin: ${mockBitcoinPrice + 1} $`)
     ).toBeVisible();
-    expect(screen.getByText("Score: 15")).toBeVisible();
+    expect(screen.getByText("Score:")).toBeVisible();
+    expect(screen.getByText("15")).toBeVisible();
     expect(upButton).not.toBeDisabled();
     expect(downButton).not.toBeDisabled();
 

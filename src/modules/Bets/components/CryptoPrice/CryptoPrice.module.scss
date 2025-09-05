@@ -1,0 +1,11 @@
+@use "~/assets/css/variables.scss";
+
+.cryptoPrice {
+  &__icon {
+    color: variables.$color-orange;
+  }
+
+  &__price {
+    white-space: nowrap;
+  }
+}

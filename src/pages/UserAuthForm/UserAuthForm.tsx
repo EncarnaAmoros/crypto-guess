@@ -61,36 +61,35 @@ const UserAuthForm = () => {
         </header>
 
         <section className={styles.userAuthForm__content}>
-          <div className={styles.userAuthForm__userAuthForm}>
-            <p>{intl.formatMessage({ id: `${authFormType}.description` })}</p>
-            <TextField
-              label={intl.formatMessage({ id: "username" })}
-              variant="outlined"
-              value={username}
-              onChange={(e) =>
-                setUsername(e.target.value.replaceAll(/\s/g, ""))
-              }
-              onKeyDown={(e) => {
-                if (e.key === " ") e.preventDefault();
-              }}
-              fullWidth
-              margin="normal"
-            />
+          <div>{intl.formatMessage({ id: `${authFormType}.description` })}</div>
+          <TextField
+            className={styles.userAuthForm__input}
+            label={intl.formatMessage({ id: "username" })}
+            variant="outlined"
+            value={username}
+            onChange={(e) => setUsername(e.target.value.replaceAll(/\s/g, ""))}
+            onKeyDown={(e) => {
+              if (e.key === " ") e.preventDefault();
+              if (e.key === "Enter") handleFormSubmit();
+            }}
+            fullWidth
+            margin="normal"
+            error={!!authFormError}
+          />
 
-            <Button
-              variant="contained"
-              onClick={handleFormSubmit}
-              disabled={loading || !username}
-              startIcon={loading ? <CircularProgress size={14} /> : undefined}
-            >
-              {intl.formatMessage({
-                id:
-                  authFormType === AUTH_FORM_TYPES.SIGNIN
-                    ? "signin"
-                    : "create.account",
-              })}
-            </Button>
-          </div>
+          <Button
+            variant="contained"
+            onClick={handleFormSubmit}
+            disabled={loading || !username}
+            startIcon={loading ? <CircularProgress size={14} /> : undefined}
+          >
+            {intl.formatMessage({
+              id:
+                authFormType === AUTH_FORM_TYPES.SIGNIN
+                  ? "signin"
+                  : "create.account",
+            })}
+          </Button>
         </section>
       </div>
 
