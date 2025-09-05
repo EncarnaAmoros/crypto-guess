@@ -21,7 +21,8 @@ describe("CryptoPrice", () => {
   it("should render crypto name, price and currency when not loading", () => {
     renderWithIntl(<CryptoPrice {...defaultProps} />);
 
-    expect(screen.getByText("Bitcoin: 45000 $")).toBeVisible();
+    expect(screen.getByText("Bitcoin:")).toBeVisible();
+    expect(screen.getByText("45000 $")).toBeVisible();
   });
 
   it("should render with EUR currency", () => {
@@ -29,7 +30,7 @@ describe("CryptoPrice", () => {
       <CryptoPrice {...defaultProps} currency={CURRENCY.EUR} price={38000} />
     );
 
-    expect(screen.getByText("Bitcoin: 38000 €")).toBeVisible();
+    expect(screen.getByText("38000 €")).toBeVisible();
   });
 
   it("should render with different crypto name", () => {
@@ -37,7 +38,8 @@ describe("CryptoPrice", () => {
       <CryptoPrice {...defaultProps} cryptoName="Ethereum" price={3000} />
     );
 
-    expect(screen.getByText("Ethereum: 3000 $")).toBeVisible();
+    expect(screen.getByText("Ethereum:")).toBeVisible();
+    expect(screen.getByText("3000 $")).toBeVisible();
   });
 
   it("should render Bitcoin icon", () => {
@@ -50,12 +52,12 @@ describe("CryptoPrice", () => {
   it("should handle zero price", () => {
     renderWithIntl(<CryptoPrice {...defaultProps} price={0} />);
 
-    expect(screen.getByText("Bitcoin: 0 $")).toBeVisible();
+    expect(screen.getByText("0 $")).toBeVisible();
   });
 
   it("should handle decimal prices", () => {
     renderWithIntl(<CryptoPrice {...defaultProps} price={45000.99} />);
 
-    expect(screen.getByText("Bitcoin: 45000.99 $")).toBeVisible();
+    expect(screen.getByText("45000.99 $")).toBeVisible();
   });
 });

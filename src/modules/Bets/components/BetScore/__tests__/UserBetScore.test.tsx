@@ -72,7 +72,8 @@ describe("UserBetScore", () => {
     expect(screen.getByTestId("loader")).toBeVisible();
 
     await waitFor(() => {
-      expect(screen.getByText("Score: 15")).toBeVisible();
+      expect(screen.getByText("Score:")).toBeVisible();
+      expect(screen.getByText("15")).toBeVisible();
       expect(screen.queryByRole("progressbar")).not.toBeInTheDocument();
     });
   });
@@ -86,7 +87,8 @@ describe("UserBetScore", () => {
     renderWithIntl(<UserBetScore />);
 
     await waitFor(() => {
-      expect(screen.getByText("Score: -")).toBeVisible();
+      expect(screen.getByText("Score:")).toBeVisible();
+      expect(screen.getByText("-")).toBeVisible();
     });
   });
 
@@ -103,7 +105,8 @@ describe("UserBetScore", () => {
     renderWithIntl(<UserBetScore />);
 
     await waitFor(() => {
-      expect(screen.getByText("Score: 0")).toBeVisible();
+      expect(screen.getByText("Score:")).toBeVisible();
+      expect(screen.getByText("0")).toBeVisible();
     });
   });
 
@@ -133,20 +136,6 @@ describe("UserBetScore", () => {
     renderWithIntl(<UserBetScore />);
 
     expect(mockGetUserScore).not.toHaveBeenCalled();
-  });
-
-  it("should render SportsScore icon", async () => {
-    mockGetUserScore.mockResolvedValue({
-      error: false,
-      data: { ...userDefaultScore },
-    });
-
-    renderWithIntl(<UserBetScore />);
-
-    await waitFor(() => {
-      const sportsIcon = screen.getByTestId("SportsScoreIcon");
-      expect(sportsIcon).toBeVisible();
-    });
   });
 
   it("should call getUserScore with correct user id", async () => {

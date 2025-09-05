@@ -1,0 +1,17 @@
+@use "~/assets/css/variables.scss";
+
+.betText {
+  font-size: 14px;
+  padding: 0px 40px;
+  min-width: 240px;
+
+  &__text {
+    display: inline;
+  }
+
+  &__highlight {
+    display: inline;
+    font-weight: bold;
+    color: variables.$color-orange;
+  }
+}

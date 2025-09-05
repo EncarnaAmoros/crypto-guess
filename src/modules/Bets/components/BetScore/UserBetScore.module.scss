@@ -1,0 +1,7 @@
+@use "~/assets/css/variables.scss";
+
+.userBetScore {
+  &__icon {
+    color: variables.$color-orange;
+  }
+}

@@ -1,9 +1,9 @@
 import { screen } from "@testing-library/react";
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { renderWithIntl } from "~/tests/testUtils";
 import BitcoinPrice from "../BitcoinPrice";
 import * as useBetStore from "~/modules/Bets/store/useBetStore";
 import * as useBTCPrice from "~/modules/Bets/service/useCryptoStream";
+import { renderWithIntl } from "~/tests/testUtils";
 
 vi.mock("~/modules/Bets/store/useBetStore");
 vi.mock("~/modules/Bets/service/useCryptoStream");
@@ -30,7 +30,8 @@ describe("BitcoinPrice", () => {
 
     renderWithIntl(<BitcoinPrice />);
 
-    expect(screen.getByText("Bitcoin: 45000 $")).toBeVisible();
+    expect(screen.getByText("Bitcoin:")).toBeVisible();
+    expect(screen.getByText("45000 $")).toBeVisible();
     expect(screen.queryByRole("progressbar")).not.toBeInTheDocument();
   });
 
@@ -39,7 +40,7 @@ describe("BitcoinPrice", () => {
 
     renderWithIntl(<BitcoinPrice />);
 
-    expect(screen.getByText("Bitcoin: 45000.99 $")).toBeVisible();
+    expect(screen.getByText("45000.99 $")).toBeVisible();
   });
 
   it("should call useBTCPrice hook to fetch data", () => {

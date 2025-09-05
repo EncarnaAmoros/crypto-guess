@@ -1,6 +1,7 @@
 import { useIntl } from "react-intl";
 import { useShallow } from "zustand/shallow";
 import useSessionStore from "~/modules/Auth/store/useSessionStore";
+import PersonIcon from "@mui/icons-material/Person";
 import { Button } from "@mui/material";
 
 import styles from "./Header.module.scss";
@@ -27,7 +28,12 @@ const Header = () => {
           { username: session?.user?.username }
         )}
       </div>
-      <Button variant="contained" onClick={handleClearAccount}>
+      <Button
+        variant="text"
+        onClick={handleClearAccount}
+        className={styles.header__button}
+        startIcon={<PersonIcon />}
+      >
         {intl.formatMessage({ id: "logout" })}
       </Button>
     </header>

@@ -9,7 +9,9 @@
   gap: 20px;
   justify-content: space-between;
   align-items: center;
-  color: variables.$color-muted-light !important;
+  box-shadow:
+    0 4px 12px rgba(0, 0, 0, 0.4),
+    0 2px 4px rgba(0, 0, 0, 0.3);
 
   &__description {
     flex: 2;

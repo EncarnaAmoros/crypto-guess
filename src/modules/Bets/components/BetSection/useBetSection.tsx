@@ -53,24 +53,11 @@ const useBetSection = () => {
     setUserBets(response.data);
   };
 
-  const onGoingBetText = intl.formatMessage({
-    id: "bets.disabled.ongoing.bet",
-  });
-
-  const betDescription =
-    userBets?.length > 0
-      ? intl.formatMessage({ id: "bet.description" })
-      : intl.formatMessage({ id: "bet.empty.state.description" });
-
-  const currentBetOnGoing: boolean =
-    userBets.length > 0 && !!userBets?.find((bet) => bet.success == null);
-
-  const betTextDescription = currentBetOnGoing
-    ? onGoingBetText
-    : betDescription;
+  const currentBetOnGoing: boolean = !!userBets?.find(
+    (bet) => bet.success == null
+  );
 
   return {
-    betTextDescription,
     currentBetOnGoing,
     makeBetHandler,
   };

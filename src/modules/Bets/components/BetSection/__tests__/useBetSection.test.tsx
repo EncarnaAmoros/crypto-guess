@@ -4,13 +4,7 @@ import { renderHookWithIntl } from "~/tests/testUtils";
 import useBetSection from "../useBetSection";
 import { GENERAL_ERROR } from "~/tests/constants/errorMessages";
 import { CRYPTO_BET } from "~/modules/Bets/constants/bets";
-import {
-  defaultUser,
-  mockedBet,
-  mockBetDescriptionEmpty,
-  mockBetDescription,
-  mockBetDescriptionOngoing,
-} from "./mockedData";
+import { defaultUser, mockedBet } from "./mockedData";
 import * as betsService from "~/modules/Bets/service/betsService";
 import * as useBetStore from "~/modules/Bets/store/useBetStore";
 import * as useSessionStore from "~/modules/Auth/store/useSessionStore";
@@ -52,7 +46,6 @@ describe("useBetSection", () => {
   it("should return empty state description when no user bets", () => {
     const { result } = renderHookWithIntl(() => useBetSection());
 
-    expect(result.current.betTextDescription).toBe(mockBetDescriptionEmpty);
     expect(result.current.currentBetOnGoing).toBe(false);
   });
 
@@ -67,7 +60,6 @@ describe("useBetSection", () => {
 
     const { result } = renderHookWithIntl(() => useBetSection());
 
-    expect(result.current.betTextDescription).toBe(mockBetDescription);
     expect(result.current.currentBetOnGoing).toBe(false);
   });
 
@@ -82,7 +74,6 @@ describe("useBetSection", () => {
 
     const { result } = renderHookWithIntl(() => useBetSection());
 
-    expect(result.current.betTextDescription).toBe(mockBetDescriptionOngoing);
     expect(result.current.currentBetOnGoing).toBe(true);
   });
 
@@ -240,6 +231,5 @@ describe("useBetSection", () => {
     const { result } = renderHookWithIntl(() => useBetSection());
 
     expect(result.current.currentBetOnGoing).toBe(true);
-    expect(result.current.betTextDescription).toBe(mockBetDescriptionOngoing);
   });
 });

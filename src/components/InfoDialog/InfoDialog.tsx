@@ -8,6 +8,8 @@ import {
 } from "@mui/material";
 import { useIntl } from "react-intl";
 
+import styles from "./InfoDialog.module.scss";
+
 interface InfoDialogProps {
   open: boolean;
   onClose: () => void;
@@ -24,6 +26,7 @@ const InfoDialog = ({ open, onClose, title, message }: InfoDialogProps) => {
       onClose={onClose}
       aria-labelledby="info-dialog-title"
       aria-describedby="info-dialog-description"
+      className={styles.infoDialog}
       maxWidth="sm"
       fullWidth
     >

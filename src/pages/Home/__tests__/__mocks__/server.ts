@@ -8,5 +8,5 @@ export const server = setupServer(
   ...betsRequestHandler
 );
 
-// Mock fetch for Supabase
+// Mock fetch for Supabase in MSW
 global.fetch = fetch;

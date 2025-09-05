@@ -11,7 +11,9 @@ const MainSideBar = () => {
           src="/bitcoin-icon.svg"
           alt="Bitcoin Icon"
         />
-        <div className={styles.mainSideBar__title}>{APP_NAME}</div>
+        <div className={styles.mainSideBar__title}>
+          {APP_NAME.toUpperCase()}
+        </div>
       </header>
     </div>
   );

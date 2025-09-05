@@ -3,7 +3,10 @@ import userEvent from "@testing-library/user-event";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { renderWithIntl } from "~/tests/testUtils";
 import BetSection from "../BetSection";
-import { mockBetDescriptionEmpty } from "./mockedData";
+import {
+  mockBetDescriptionEmpty1,
+  mockBetDescriptionEmpty2,
+} from "./mockedData";
 import { CRYPTO_BET } from "~/modules/Bets/constants/bets";
 import * as useBetSection from "../useBetSection";
 import * as useActiveBets from "../useActiveBets";
@@ -26,19 +29,18 @@ describe("BetSection", () => {
 
   it("should render bet description", () => {
     mockUseBetSection.mockReturnValue({
-      betTextDescription: mockBetDescriptionEmpty,
       currentBetOnGoing: false,
       makeBetHandler: mockMakeBetHandler,
     });
 
     renderWithIntl(<BetSection />);
 
-    expect(screen.getByText(mockBetDescriptionEmpty)).toBeVisible();
+    expect(screen.getByText(mockBetDescriptionEmpty1)).toBeVisible();
+    expect(screen.getByText(mockBetDescriptionEmpty2)).toBeVisible();
   });
 
   it("should render UP and DOWN bet buttons labels", () => {
     mockUseBetSection.mockReturnValue({
-      betTextDescription: "Test description",
       currentBetOnGoing: false,
       makeBetHandler: mockMakeBetHandler,
     });
@@ -51,7 +53,6 @@ describe("BetSection", () => {
 
   it("should enable buttons when no ongoing bet", () => {
     mockUseBetSection.mockReturnValue({
-      betTextDescription: "Test description",
       currentBetOnGoing: false,
       makeBetHandler: mockMakeBetHandler,
     });
@@ -64,7 +65,6 @@ describe("BetSection", () => {
 
   it("should disable buttons when there is an ongoing bet", () => {
     mockUseBetSection.mockReturnValue({
-      betTextDescription: "Test description",
       currentBetOnGoing: true,
       makeBetHandler: mockMakeBetHandler,
     });
@@ -77,7 +77,6 @@ describe("BetSection", () => {
 
   it("should call makeBetHandler with UP when UP button is clicked", async () => {
     mockUseBetSection.mockReturnValue({
-      betTextDescription: "Test description",
       currentBetOnGoing: false,
       makeBetHandler: mockMakeBetHandler,
     });
@@ -91,7 +90,6 @@ describe("BetSection", () => {
 
   it("should call makeBetHandler with DOWN when DOWN button is clicked", async () => {
     mockUseBetSection.mockReturnValue({
-      betTextDescription: "Test description",
       currentBetOnGoing: false,
       makeBetHandler: mockMakeBetHandler,
     });
@@ -105,7 +103,6 @@ describe("BetSection", () => {
 
   it("should render tooltips for bet buttons", async () => {
     mockUseBetSection.mockReturnValue({
-      betTextDescription: "Test description",
       currentBetOnGoing: false,
       makeBetHandler: mockMakeBetHandler,
     });
@@ -127,7 +124,6 @@ describe("BetSection", () => {
 
   it("should render arrow icons in buttons", () => {
     mockUseBetSection.mockReturnValue({
-      betTextDescription: "Test description",
       currentBetOnGoing: false,
       makeBetHandler: mockMakeBetHandler,
     });
@@ -140,7 +136,6 @@ describe("BetSection", () => {
 
   it("should call useActiveBets when component is mounted", () => {
     mockUseBetSection.mockReturnValue({
-      betTextDescription: "Test description",
       currentBetOnGoing: false,
       makeBetHandler: mockMakeBetHandler,
     });

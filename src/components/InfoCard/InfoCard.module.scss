@@ -1,6 +1,11 @@
 @use "~/assets/css/variables.scss";
 
 .infoCard {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  justify-content: center;
+  align-items: center;
   padding: 40px 20px;
   border-radius: 20px !important;
   flex: 1;
@@ -8,15 +13,19 @@
   max-height: 200px;
   height: 100%;
   width: 100%;
-  min-width: 200px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: variables.$color-muted-light !important;
+  min-width: 250px;
+  box-shadow:
+    0 4px 12px rgba(0, 0, 0, 0.4),
+    0 2px 4px rgba(0, 0, 0, 0.3);
 
-  &__icon svg {
-    font-size: 45px !important;
-    margin-right: 8px;
-    margin-top: 1px;
+  &__title {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+
+    &Icon svg {
+      font-size: 35px !important;
+      margin-top: 1px;
+    }
   }
 }
