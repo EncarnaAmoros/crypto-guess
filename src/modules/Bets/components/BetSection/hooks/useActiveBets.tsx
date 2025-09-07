@@ -1,4 +1,4 @@
-import { useEffect, useCallback, useRef } from "react";
+import { useEffect, useCallback, useRef, useState } from "react";
 import { useShallow } from "zustand/shallow";
 import { UserBet } from "~/modules/Bets/types/userBets";
 import useBetNotifications from "./useBetNotifications";
@@ -6,13 +6,14 @@ import { useErrorHandler } from "~/modules/Layout/hooks/useErrorHandler";
 import useSessionStore from "~/modules/Auth/store/useSessionStore";
 import useBetStore from "~/modules/Bets/store/useBetStore";
 import {
+  getUserBetUpdatedResult,
   isBetReadyToResolve,
   shouldUpdateScore,
   getBetPoints,
 } from "~/modules/Bets/utils/checkBetData";
 import {
   getUserScore,
-  updateUserBetSuccess,
+  updateUserBet,
   upsertUserScore,
 } from "~/modules/Bets/service/betsService";
 
@@ -20,20 +21,22 @@ import {
 // When the bet is resolved, update the bet and score
 const useActiveBets = (intervalMs = 1000) => {
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
+  const [hasError, setHasError] = useState(false);
   const session = useSessionStore((state) => state.session);
-  const { notifyScoreChange } = useBetNotifications();
+  const { notifyBetResult } = useBetNotifications();
   const { handleError } = useErrorHandler();
 
-  const { bitcoinPrice, userBets, setUserBets, setUserScore } = useBetStore(
-    useShallow((state) => ({
-      bitcoinPrice: state.bitcoinPrice,
-      userBets: state.userBets,
-      setUserBets: state.setUserBets,
-      setUserScore: state.setUserScore,
-    }))
-  );
+  const { bitcoinPrice, userBets, setUserScore, updateOnGoingBet } =
+    useBetStore(
+      useShallow((state) => ({
+        bitcoinPrice: state.bitcoinPrice,
+        userBets: state.userBets,
+        setUserScore: state.setUserScore,
+        updateOnGoingBet: state.updateOnGoingBet,
+      }))
+    );
 
-  const hasOngoingBet = !!userBets?.find((bet) => bet.success == null);
+  const hasOngoingBet = !!userBets?.find((bet) => !bet.result);
 
   const updateScore = useCallback(
     async (betPoints: number) => {
@@ -52,43 +55,44 @@ const useActiveBets = (intervalMs = 1000) => {
           return handleError(newScoreResponse.messageKey);
 
         setUserScore(newScoreResponse.data);
-        notifyScoreChange(betPoints);
       }
+      notifyBetResult(betPoints);
     },
-    [session?.user?.id, handleError, setUserScore, notifyScoreChange]
+    [session?.user?.id, handleError, setUserScore, notifyBetResult]
   );
 
   const updateBetAndScore = useCallback(
-    async (ongoingBet: UserBet, betPoints: number) => {
+    async (ongoingBet: UserBet, bitcoinPrice: number) => {
       if (!session?.user?.id) return;
 
-      const betSuccess = betPoints > 0 || betPoints === 0;
-      const updateResponse = await updateUserBetSuccess(
-        ongoingBet.id,
-        betSuccess
-      );
-      if (updateResponse.error) return handleError(updateResponse.messageKey);
+      const updatedBet = getUserBetUpdatedResult(ongoingBet, bitcoinPrice);
+      const updateResponse = await updateUserBet(updatedBet.id, updatedBet);
 
-      setUserBets(updateResponse.data);
-      updateScore(betPoints);
+      if (updateResponse.error) {
+        handleError(updateResponse.messageKey);
+        setHasError(true);
+        return;
+      }
+
+      updateOnGoingBet(updateResponse.data);
+      updateScore(getBetPoints(updatedBet));
     },
-    [session?.user?.id, handleError, setUserBets, updateScore]
+    [session?.user?.id, handleError, updateOnGoingBet, updateScore]
   );
 
   const checkAndUpdateOnGoingBets = useCallback(async () => {
-    if (!session?.user?.id || !userBets.length) return;
+    if (!session?.user?.id || !userBets.length || hasError) return;
 
-    const ongoingBet = userBets.find((bet) => bet.success == null);
+    const ongoingBet = userBets.find((bet) => !bet.result);
     if (!ongoingBet) return;
 
     if (!isBetReadyToResolve(ongoingBet)) return;
 
-    const betPoints = getBetPoints(ongoingBet, bitcoinPrice);
-    updateBetAndScore(ongoingBet, betPoints);
-  }, [session?.user?.id, userBets, bitcoinPrice, updateBetAndScore]);
+    updateBetAndScore(ongoingBet, bitcoinPrice);
+  }, [session?.user?.id, userBets, bitcoinPrice, updateBetAndScore, hasError]);
 
   useEffect(() => {
-    if (hasOngoingBet) {
+    if (hasOngoingBet && !hasError) {
       intervalRef.current = setInterval(() => {
         checkAndUpdateOnGoingBets();
       }, intervalMs);
@@ -103,7 +107,12 @@ const useActiveBets = (intervalMs = 1000) => {
         intervalRef.current = null;
       }
     };
-  }, [hasOngoingBet, checkAndUpdateOnGoingBets, intervalMs]);
+  }, [hasOngoingBet, hasError, checkAndUpdateOnGoingBets, intervalMs]);
+
+  // Reset error state when userBets change (new bet created)
+  useEffect(() => {
+    setHasError(false);
+  }, [userBets.length]);
 };
 
 export default useActiveBets;

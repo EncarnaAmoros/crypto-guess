@@ -1,12 +1,13 @@
-import { CRYPTO_BET } from "~/modules/Bets/constants/bets";
+import { CRYPTO_BET, BET_RESULT } from "~/modules/Bets/constants/bets";
 import { UserBet, UserScore } from "~/modules/Bets/types/userBets";
 
 export const mockOngoingBet: UserBet = {
   id: "bet-1",
   userId: "user-1",
   bet: CRYPTO_BET.UP,
-  cryptoPrice: 45000,
-  success: undefined,
+  cryptoStartPrice: 45000,
+  cryptoEndPrice: null,
+  result: null,
   createdAt: new Date(),
   updatedAt: new Date(),
 };
@@ -15,8 +16,9 @@ export const mockCompletedBet: UserBet = {
   id: "bet-1",
   userId: "user-1",
   bet: CRYPTO_BET.UP,
-  cryptoPrice: 45000,
-  success: true,
+  cryptoStartPrice: 45000,
+  cryptoEndPrice: 46000,
+  result: BET_RESULT.SUCCESS,
   createdAt: new Date(),
   updatedAt: new Date(),
 };
@@ -25,8 +27,9 @@ export const mockFailedBet: UserBet = {
   id: "bet-2",
   userId: "user-1",
   bet: CRYPTO_BET.DOWN,
-  cryptoPrice: 46000,
-  success: false,
+  cryptoStartPrice: 46000,
+  cryptoEndPrice: 47000,
+  result: BET_RESULT.FAILURE,
   createdAt: new Date(),
   updatedAt: new Date(),
 };

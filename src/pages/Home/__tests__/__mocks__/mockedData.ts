@@ -1,4 +1,8 @@
-import { BET_TIME, CRYPTO_BET } from "~/modules/Bets/constants/bets";
+import {
+  BET_TIME,
+  CRYPTO_BET,
+  BET_RESULT,
+} from "~/modules/Bets/constants/bets";
 import { UserBet, UserScore } from "~/modules/Bets/types/userBets";
 
 export const betCreationTime = new Date("2023-01-01T12:00:00Z");
@@ -21,17 +25,19 @@ export const mockUserBets: UserBet[] = [
     id: "bet-1",
     userId: mockUser.id,
     bet: CRYPTO_BET.UP,
-    cryptoPrice: 44000,
-    success: true,
+    cryptoStartPrice: 44000,
+    cryptoEndPrice: 45000,
+    result: BET_RESULT.SUCCESS,
     createdAt: new Date(),
     updatedAt: new Date(),
   },
   {
     id: "bet-2",
     userId: mockUser.id,
-    bet: CRYPTO_BET.DOWN,
-    cryptoPrice: 46000,
-    success: false,
+    bet: CRYPTO_BET.UP,
+    cryptoStartPrice: 46000,
+    cryptoEndPrice: 45000,
+    result: BET_RESULT.FAILURE,
     createdAt: new Date(),
     updatedAt: new Date(),
   },
@@ -41,8 +47,9 @@ export const mockOngoingBet: UserBet = {
   id: "bet-ongoing",
   userId: mockUser.id,
   bet: CRYPTO_BET.UP,
-  cryptoPrice: mockBitcoinPrice,
-  success: undefined,
+  cryptoStartPrice: mockBitcoinPrice,
+  cryptoEndPrice: null,
+  result: null,
   createdAt: betCreationTime,
   updatedAt: betCreationTime,
 };
@@ -61,16 +68,6 @@ export const mockSupabaseScore = {
   score: mockUserScore.score,
   created_at: mockUserScore.createdAt.toISOString(),
   updated_at: mockUserScore.updatedAt.toISOString(),
-};
-
-export const mockSupabaseOngoingBet = {
-  id: mockOngoingBet.id,
-  user_id: mockOngoingBet.userId,
-  bet: mockOngoingBet.bet,
-  crypto_price: mockOngoingBet.cryptoPrice,
-  success: mockOngoingBet.success,
-  created_at: mockOngoingBet.createdAt.toISOString(),
-  updated_at: mockOngoingBet.updatedAt.toISOString(),
 };
 
 export const createMockScore = (

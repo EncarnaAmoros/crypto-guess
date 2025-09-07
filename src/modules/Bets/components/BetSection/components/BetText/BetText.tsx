@@ -8,7 +8,7 @@ const BetText = () => {
 
   const userBets = useBetStore((state) => state.userBets);
 
-  const onGoingBet = !!userBets?.find((bet) => bet.success == null);
+  const onGoingBet = !!userBets?.find((bet) => !bet.result);
 
   if (onGoingBet) {
     return (

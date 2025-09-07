@@ -14,7 +14,7 @@ const useBetTimer = () => {
   );
 
   const calculateRemainingTime = useCallback(() => {
-    const ongoingBet = userBets.find((bet) => bet.success === null);
+    const ongoingBet = userBets.find((bet) => !bet.result);
 
     if (!ongoingBet) {
       setRemainingSeconds(0);
@@ -32,10 +32,12 @@ const useBetTimer = () => {
     setRemainingSeconds(remainingSecondsValue);
   }, [userBets]);
 
-  useEffect(() => {
-    const ongoingBet = userBets?.find((bet) => bet.success === null);
+  const currentBetOnGoing = userBets?.find((bet) => !bet.result);
 
-    if (ongoingBet && !isBetReadyToResolve(ongoingBet)) {
+  useEffect(() => {
+    if (!currentBetOnGoing) return;
+
+    if (!isBetReadyToResolve(currentBetOnGoing)) {
       calculateRemainingTime();
       const interval = setInterval(calculateRemainingTime, 1000);
 
@@ -43,10 +45,7 @@ const useBetTimer = () => {
     } else {
       setRemainingSeconds(0);
     }
-  }, [userBets, calculateRemainingTime]);
-
-  const currentBetOnGoing =
-    userBets.length > 0 && userBets.find((bet) => bet.success === null);
+  }, [userBets, calculateRemainingTime, currentBetOnGoing]);
 
   return {
     remainingSeconds,

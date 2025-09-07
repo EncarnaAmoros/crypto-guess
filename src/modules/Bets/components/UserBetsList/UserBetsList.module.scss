@@ -30,10 +30,35 @@
     color: variables.$color-gold;
   }
 
+  &__startPrice {
+    font-weight: 500;
+    color: variables.$color-info;
+  }
+
+  &__endPrice {
+    font-weight: 500;
+    color: variables.$color-orange;
+  }
+
   &__empty {
-    padding: 32px;
+    padding: 48px 32px;
     text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+  }
+
+  &__emptyMessage {
     color: variables.$color-muted;
-    font-style: italic;
+    font-size: 16px;
+    line-height: 1.5;
+    max-width: 400px;
+  }
+
+  &__emptyButton {
+    border-radius: 6px !important;
+    font-weight: 600 !important;
+    text-transform: none !important;
   }
 }

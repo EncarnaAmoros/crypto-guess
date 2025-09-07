@@ -18,8 +18,9 @@ export const mockedBet: UserBet = {
   id: "bet-id",
   userId: "test-user-id",
   bet: CRYPTO_BET.UP,
-  cryptoPrice: 45000,
-  success: undefined,
+  cryptoStartPrice: 45000,
+  cryptoEndPrice: null,
+  result: null,
   createdAt: new Date(),
   updatedAt: new Date(),
 };

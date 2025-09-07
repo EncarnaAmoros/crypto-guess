@@ -8,4 +8,10 @@ export enum CRYPTO_BET {
   DOWN = "DOWN",
 }
 
+export enum BET_RESULT {
+  SUCCESS = "success",
+  FAILURE = "failure",
+  TIE = "tie",
+}
+
 export const BET_TIME = 60 * 1000;

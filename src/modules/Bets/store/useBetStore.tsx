@@ -8,6 +8,7 @@ export interface BetState {
   setUserBets: (userBets: UserBet[]) => void;
   userScore: UserScore | null;
   setUserScore: (userScore: UserScore) => void;
+  updateOnGoingBet: (bet: UserBet) => UserBet[];
 }
 
 const useBetStore = create<BetState>((set) => ({
@@ -17,6 +18,14 @@ const useBetStore = create<BetState>((set) => ({
   setUserBets: (userBets) => set({ userBets }),
   userScore: null,
   setUserScore: (userScore) => set({ userScore }),
+  updateOnGoingBet: (bet) => {
+    let updatedBets: UserBet[] = [];
+    set((state) => {
+      updatedBets = state.userBets.map((b) => (b.id === bet.id ? bet : b));
+      return { userBets: updatedBets };
+    });
+    return updatedBets;
+  },
 }));
 
 export default useBetStore;

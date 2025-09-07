@@ -3,7 +3,7 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 import { renderHookWithIntl } from "~/tests/testUtils";
 import useBetSection from "../useBetSection";
 import { GENERAL_ERROR } from "~/tests/constants/errorMessages";
-import { CRYPTO_BET } from "~/modules/Bets/constants/bets";
+import { BET_RESULT, CRYPTO_BET } from "~/modules/Bets/constants/bets";
 import { defaultUser, mockedBet } from "./mockedData";
 import * as betsService from "~/modules/Bets/service/betsService";
 import * as useBetStore from "~/modules/Bets/store/useBetStore";
@@ -50,7 +50,7 @@ describe("useBetSection", () => {
   });
 
   it("should return bet non empty description state when user has bets", () => {
-    const completedBet = { ...mockedBet, success: true };
+    const completedBet = { ...mockedBet, result: BET_RESULT.SUCCESS };
     mockUseBetStore.mockReturnValue({
       bitcoinPrice: 45000,
       userBets: [completedBet],
@@ -64,7 +64,7 @@ describe("useBetSection", () => {
   });
 
   it("should return ongoing bet text when user has ongoing bet", () => {
-    const ongoingBet = { ...mockedBet, success: undefined };
+    const ongoingBet = { ...mockedBet, result: null };
     mockUseBetStore.mockReturnValue({
       userBets: [ongoingBet],
       setUserBets: mockSetUserBets,
@@ -78,7 +78,7 @@ describe("useBetSection", () => {
   });
 
   it("should detect ongoing bet correctly", () => {
-    const ongoingBet = { ...mockedBet, success: undefined };
+    const ongoingBet = { ...mockedBet, result: null };
     mockUseBetStore.mockReturnValue({
       bitcoinPrice: 45000,
       userBets: [ongoingBet],
@@ -217,8 +217,12 @@ describe("useBetSection", () => {
   });
 
   it("should handle mixed bet states correctly", () => {
-    const completedBet = { ...mockedBet, id: "completed", success: true };
-    const ongoingBet = { ...mockedBet, id: "ongoing", success: undefined };
+    const completedBet = {
+      ...mockedBet,
+      id: "completed",
+      result: BET_RESULT.SUCCESS,
+    };
+    const ongoingBet = { ...mockedBet, id: "ongoing", result: null };
 
     mockUseBetStore.mockReturnValue({
       bitcoinPrice: 45000,

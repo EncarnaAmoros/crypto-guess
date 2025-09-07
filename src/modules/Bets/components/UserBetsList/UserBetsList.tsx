@@ -7,24 +7,27 @@ import {
   TableRow,
   Paper,
   Chip,
+  Button,
 } from "@mui/material";
 import { useIntl } from "react-intl";
+import { useNavigate } from "react-router-dom";
+import { ROUTES } from "~/routing/routes";
 import useBetStore from "~/modules/Bets/store/useBetStore";
-import { CRYPTO_BET } from "~/modules/Bets/constants/bets";
+import { CRYPTO_BET, BET_RESULT } from "~/modules/Bets/constants/bets";
 import { UserBet } from "~/modules/Bets/types/userBets";
 import styles from "./UserBetsList.module.scss";
 
 const UserBetsList = () => {
   const intl = useIntl();
+  const navigate = useNavigate();
   const userBets = useBetStore((state) => state.userBets);
-
 
   const getBetTypeLabel = (bet: CRYPTO_BET) => {
     return bet === CRYPTO_BET.UP ? "↗️ UP" : "↘️ DOWN";
   };
 
-  const getSuccessChip = (success: boolean | undefined) => {
-    if (success === undefined) {
+  const getSuccessChip = (result: BET_RESULT | null) => {
+    if (!result) {
       return (
         <Chip
           label={intl.formatMessage({ id: "bet.status.pending" })}
@@ -34,18 +37,45 @@ const UserBetsList = () => {
         />
       );
     }
-    return (
-      <Chip
-        label={
-          success
-            ? intl.formatMessage({ id: "bet.status.success" })
-            : intl.formatMessage({ id: "bet.status.failed" })
-        }
-        color={success ? "success" : "error"}
-        variant="filled"
-        size="small"
-      />
-    );
+
+    switch (result) {
+      case BET_RESULT.SUCCESS:
+        return (
+          <Chip
+            label={intl.formatMessage({ id: "bet.status.success" })}
+            color="success"
+            variant="filled"
+            size="small"
+          />
+        );
+      case BET_RESULT.FAILURE:
+        return (
+          <Chip
+            label={intl.formatMessage({ id: "bet.status.failed" })}
+            color="error"
+            variant="filled"
+            size="small"
+          />
+        );
+      case BET_RESULT.TIE:
+        return (
+          <Chip
+            label={intl.formatMessage({ id: "bet.status.tie" })}
+            color="info"
+            variant="filled"
+            size="small"
+          />
+        );
+      default:
+        return (
+          <Chip
+            label={intl.formatMessage({ id: "bet.status.pending" })}
+            color="warning"
+            variant="outlined"
+            size="small"
+          />
+        );
+    }
   };
 
   const formatDate = (date: Date) => {
@@ -60,7 +90,10 @@ const UserBetsList = () => {
 
   return (
     <div className={styles.userBetsList}>
-      <TableContainer component={Paper} className={styles.userBetsList__container}>
+      <TableContainer
+        component={Paper}
+        className={styles.userBetsList__container}
+      >
         <Table>
           <TableHead>
             <TableRow>
@@ -68,10 +101,13 @@ const UserBetsList = () => {
                 {intl.formatMessage({ id: "bet.table.date" })}
               </TableCell>
               <TableCell>
-                {intl.formatMessage({ id: "bet.table.type" })}
+                {intl.formatMessage({ id: "bet.table.bet" })}
               </TableCell>
               <TableCell align="right">
-                {intl.formatMessage({ id: "bet.table.price" })}
+                {intl.formatMessage({ id: "bet.table.start.price" })}
+              </TableCell>
+              <TableCell align="right">
+                {intl.formatMessage({ id: "bet.table.end.price" })}
               </TableCell>
               <TableCell align="center">
                 {intl.formatMessage({ id: "bet.table.status" })}
@@ -88,15 +124,26 @@ const UserBetsList = () => {
                   </span>
                 </TableCell>
                 <TableCell align="right">
-                  <span className={styles.userBetsList__price}>
-                    ${bet.cryptoPrice.toLocaleString(intl.locale, {
+                  <span className={styles.userBetsList__startPrice}>
+                    $
+                    {bet.cryptoStartPrice.toLocaleString(intl.locale, {
                       minimumFractionDigits: 2,
                       maximumFractionDigits: 2,
                     })}
                   </span>
                 </TableCell>
+                <TableCell align="right">
+                  <span className={styles.userBetsList__endPrice}>
+                    {bet.cryptoEndPrice
+                      ? `$${bet.cryptoEndPrice.toLocaleString(intl.locale, {
+                          minimumFractionDigits: 2,
+                          maximumFractionDigits: 2,
+                        })}`
+                      : intl.formatMessage({ id: "bet.table.pending" })}
+                  </span>
+                </TableCell>
                 <TableCell align="center">
-                  {getSuccessChip(bet.success)}
+                  {getSuccessChip(bet.result)}
                 </TableCell>
               </TableRow>
             ))}
@@ -104,7 +151,23 @@ const UserBetsList = () => {
         </Table>
         {userBets.length === 0 && (
           <div className={styles.userBetsList__empty}>
-            {intl.formatMessage({ id: "bet.table.empty" })}
+            <div className={styles.userBetsList__emptyMessage}>
+              <div>
+                {intl.formatMessage({ id: "bet.table.empty.message.line1" })}
+              </div>
+              <div>
+                {intl.formatMessage({ id: "bet.table.empty.message.line2" })}
+              </div>
+            </div>
+            <Button
+              variant="contained"
+              color="primary"
+              size="medium"
+              onClick={() => navigate(ROUTES.HOME)}
+              className={styles.userBetsList__emptyButton}
+            >
+              {intl.formatMessage({ id: "bet.table.empty.action" })}
+            </Button>
           </div>
         )}
       </TableContainer>

@@ -2,7 +2,10 @@ import { ServiceResponse } from "~/services/types/requests";
 import { supabase } from "~/services/dbClient";
 import { CRYPTO_BET } from "~/modules/Bets/constants/bets";
 import { UserBet, UserScore } from "~/modules/Bets/types/userBets";
-import { deepConvertToCamelCase } from "~/services/utils/dataConverter";
+import {
+  deepConvertToCamelCase,
+  deepConvertToSnakeCase,
+} from "~/services/utils/dataConverter";
 import {
   USER_BETS_TABLE,
   USER_SCORES_TABLE,
@@ -19,7 +22,7 @@ export const createUserBet = async (
       {
         user_id: userId,
         bet,
-        crypto_price: cryptoPrice,
+        crypto_start_price: cryptoPrice,
       },
     ])
     .select("*");
@@ -35,15 +38,16 @@ export const createUserBet = async (
   };
 };
 
-export const updateUserBetSuccess = async (
+export const updateUserBet = async (
   betId: string,
-  success: boolean
-): Promise<ServiceResponse<UserBet[]>> => {
+  updatedBet: UserBet
+): Promise<ServiceResponse<UserBet>> => {
   const { data, error } = await supabase
     .from(USER_BETS_TABLE)
-    .update({ success })
+    .update(deepConvertToSnakeCase(updatedBet))
     .eq("id", betId)
-    .select("*");
+    .select("*")
+    .single();
 
   if (error)
     return {
