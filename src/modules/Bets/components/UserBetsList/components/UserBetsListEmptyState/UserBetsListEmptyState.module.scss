@@ -1,0 +1,25 @@
+@use "~/assets/css/variables";
+
+.userBetsListEmptyState {
+  padding: 48px 32px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+
+  &__message {
+    color: variables.$color-muted;
+    font-size: 16px;
+    line-height: 1.5;
+    max-width: 400px;
+  }
+
+  &__button {
+    padding: 8px 16px !important;
+    border-radius: 6px !important;
+    font-weight: 600 !important;
+    text-transform: none !important;
+    font-size: 14px !important;
+  }
+}

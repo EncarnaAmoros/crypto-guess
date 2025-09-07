@@ -14,4 +14,8 @@ export enum BET_RESULT {
   TIE = "tie",
 }
 
+export enum BET_SORT_FIELD {
+  RESULT = "result",
+}
+
 export const BET_TIME = 60 * 1000;
