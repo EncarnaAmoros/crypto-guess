@@ -1,11 +1,12 @@
-import { CRYPTO_BET } from "../constants/bets";
+import { CRYPTO_BET, BET_RESULT } from "../constants/bets";
 
 export interface UserBet {
   id: string;
   userId: string;
   bet: CRYPTO_BET;
-  cryptoPrice: number;
-  success?: boolean;
+  cryptoStartPrice: number;
+  cryptoEndPrice: number | null;
+  result: BET_RESULT | null;
   createdAt: Date;
   updatedAt: Date;
 }

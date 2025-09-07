@@ -53,9 +53,7 @@ const useBetSection = () => {
     setUserBets(response.data);
   };
 
-  const currentBetOnGoing: boolean = !!userBets?.find(
-    (bet) => bet.success == null
-  );
+  const currentBetOnGoing: boolean = !!userBets?.find((bet) => !bet.result);
 
   return {
     currentBetOnGoing,

@@ -2,7 +2,7 @@ import { useIntl } from "react-intl";
 import { AccessTime } from "@mui/icons-material";
 import { Chip } from "@mui/material";
 import useBetTimer from "~/modules/Bets/components/BetTimer/useBetTimer";
-
+import classNames from "classnames";
 import styles from "./BetTimer.module.scss";
 
 const BetTimer = () => {
@@ -25,9 +25,10 @@ const BetTimer = () => {
     <Chip
       icon={<AccessTime />}
       label={`${intl.formatMessage({ id: "bet.timer.remaining" })}: ${formatTime(remainingSeconds)}`}
-      color={remainingSeconds <= 10 ? "error" : "primary"}
       variant="outlined"
-      className={styles.betTimer}
+      className={classNames(styles.betTimer, {
+        [styles["betTimer--onTimeLimit"]]: remainingSeconds <= 10,
+      })}
     />
   );
 };

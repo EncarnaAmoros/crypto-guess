@@ -1,11 +1,24 @@
-# Crypto guess app: React + TypeScript + Vite
+# Crypto guess app
 
 This is a project built with React + TypeScript + Vite.
-It uses ESLint and Prettier rules and vitest + testing-library + msw for testing.
+It uses ESLint and Prettier rules and vitest + testing library + msw for testing.
 
 ## Description
 
-Crypto Guess is a simple and interactive web application where players predict whether the price of Bitcoin (BTC/USD) will go up or down in the next 60 seconds. The game combines real-time cryptocurrency market data with a fun and competitive scoring system.
+Crypto Guess is a simple and interactive web application where players predict whether the **price of Bitcoin (BTC/USD)** will go up or down in the next minute. The game combines real-time cryptocurrency market data with a fun and competitive scoring system.
+
+Players identify themselves with a **unique username**, which allows them to keep track of their progress.  
+If a user leaves the page and comes back later, the application restores the state of their **active bet**, so they can seamlessly continue where they left off.
+
+When a bet is resolved, the player is immediately **notified of the points gained or lost**, making the experience dynamic and engaging.
+
+Additionally, the app features a dedicated **statistics page** where players can review detailed insights into their betting history, including outcomes and performance trends, helping them analyze and improve their prediction strategies.
+
+## Notes
+
+- For this prototype, the Bitcoin price is fetched using **polling** instead of a real-time **stream**.
+- The ideal implementation should use a backend service that connects to a real-time stream of BTC prices and relays updates to the frontend.
+- Since there were issues running the stream locally, it was replaced with polling to keep the project simple and functional for testing purposes.
 
 ## Tech stack
 
@@ -13,16 +26,29 @@ Crypto Guess is a simple and interactive web application where players predict w
 - CSS Modules
 - TypeScript
 - Vite
+- Vitest
+- Material UI
 - React Router
 - React Intl for translations
 - Zustand for global state
 - ESLint
 - Prettier
-- Vitest
 - Testing Library
+- Supabase (DB)
 - MSW
 
-## Usage
+## Remote deployment
+
+The app is deployed using Netlify, 👉 [click here](https://playcrypto.netlify.app/)!
+
+## Local deployment
+
+To be able to run the app, you need to create a `.env` file in the root of the project and add the following variables:
+
+- `VITE_SUPABASE_URL`
+- `VITE_SUPABASE_ANON_KEY`
+
+### Usage
 
 To install dependencies, run:
 

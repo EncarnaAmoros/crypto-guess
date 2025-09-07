@@ -1,0 +1,41 @@
+@use "~/assets/css/variables.scss";
+
+.userBetsList {
+  width: 100%;
+
+  &__container {
+    margin-top: 16px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    width: 100%;
+
+    .MuiTable-root {
+      width: 100%;
+    }
+  }
+
+  &__row {
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.4) !important;
+    }
+  }
+
+  &__betType {
+    font-size: 12px;
+    padding: 4px;
+    border-radius: 4px;
+  }
+
+  &__price {
+    font-weight: 500;
+    color: variables.$color-gold;
+  }
+
+  &__startPrice {
+    font-weight: 500;
+  }
+
+  &__endPrice {
+    font-weight: 500;
+  }
+}

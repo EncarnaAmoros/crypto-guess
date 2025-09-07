@@ -27,7 +27,7 @@ describe("useBetNotifications", () => {
     const { result } = renderHookWithIntl(() => useBetNotifications());
 
     act(() => {
-      result.current.notifyScoreChange(5);
+      result.current.notifyBetResult(5);
     });
 
     expect(mockSetNotification).toHaveBeenCalledWith({
@@ -40,7 +40,7 @@ describe("useBetNotifications", () => {
     const { result } = renderHookWithIntl(() => useBetNotifications());
 
     act(() => {
-      result.current.notifyScoreChange(-3);
+      result.current.notifyBetResult(-3);
     });
 
     expect(mockSetNotification).toHaveBeenCalledWith({
@@ -53,7 +53,7 @@ describe("useBetNotifications", () => {
     const { result } = renderHookWithIntl(() => useBetNotifications());
 
     act(() => {
-      result.current.notifyScoreChange(0);
+      result.current.notifyBetResult(0);
     });
 
     expect(mockSetNotification).toHaveBeenCalledWith({
@@ -66,7 +66,7 @@ describe("useBetNotifications", () => {
     const { result } = renderHookWithIntl(() => useBetNotifications());
 
     act(() => {
-      result.current.notifyScoreChange(1);
+      result.current.notifyBetResult(1);
     });
 
     expect(mockSetNotification).toHaveBeenCalledTimes(1);
@@ -76,9 +76,9 @@ describe("useBetNotifications", () => {
     const { result } = renderHookWithIntl(() => useBetNotifications());
 
     act(() => {
-      result.current.notifyScoreChange(1);
-      result.current.notifyScoreChange(-1);
-      result.current.notifyScoreChange(0);
+      result.current.notifyBetResult(1);
+      result.current.notifyBetResult(-1);
+      result.current.notifyBetResult(0);
     });
 
     expect(mockSetNotification).toHaveBeenCalledTimes(3);

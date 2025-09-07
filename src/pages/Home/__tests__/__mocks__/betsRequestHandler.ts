@@ -1,4 +1,5 @@
 import { http, HttpResponse } from "msw";
+import { BET_RESULT } from "~/modules/Bets/constants/bets";
 import {
   USER_BETS_TABLE,
   USER_SCORES_TABLE,
@@ -39,7 +40,7 @@ export const betsRequestHandler = [
     async ({ request }) => {
       const url = new URL(request.url);
       const betId = url.searchParams.get("id");
-      const body = (await request.json()) as { success: boolean };
+      const body = (await request.json()) as { result: BET_RESULT };
 
       if (!betId) {
         return HttpResponse.json(
@@ -50,11 +51,10 @@ export const betsRequestHandler = [
 
       const updatedBet = {
         ...mockOngoingBet,
-        id: betId,
-        success: body.success,
+        ...body,
       };
 
-      return HttpResponse.json([updatedBet], { status: 200 });
+      return HttpResponse.json(updatedBet, { status: 200 });
     }
   ),
 

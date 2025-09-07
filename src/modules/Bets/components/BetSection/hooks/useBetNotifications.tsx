@@ -9,7 +9,7 @@ const useBetNotifications = () => {
     (state) => state.setNotification
   );
 
-  const notifyScoreChange = useCallback(
+  const notifyBetResult = useCallback(
     (betPoints: number) => {
       const getNotificationConfig = () => {
         if (betPoints > 0) {
@@ -39,7 +39,7 @@ const useBetNotifications = () => {
     [intl, setNotification]
   );
 
-  return { notifyScoreChange };
+  return { notifyBetResult };
 };
 
 export default useBetNotifications;

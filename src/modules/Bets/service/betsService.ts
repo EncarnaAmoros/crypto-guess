@@ -1,11 +1,16 @@
 import { ServiceResponse } from "~/services/types/requests";
 import { supabase } from "~/services/dbClient";
-import { CRYPTO_BET } from "~/modules/Bets/constants/bets";
+import { CRYPTO_BET, BET_SORT_FIELD } from "~/modules/Bets/constants/bets";
 import { UserBet, UserScore } from "~/modules/Bets/types/userBets";
-import { deepConvertToCamelCase } from "~/services/utils/dataConverter";
 import {
+  deepConvertToCamelCase,
+  deepConvertToSnakeCase,
+} from "~/services/utils/dataConverter";
+import {
+  SORT_ORDER,
   USER_BETS_TABLE,
   USER_SCORES_TABLE,
+  BASIC_SORT_FIELD,
 } from "~/services/constants/dbService";
 
 export const createUserBet = async (
@@ -19,7 +24,7 @@ export const createUserBet = async (
       {
         user_id: userId,
         bet,
-        crypto_price: cryptoPrice,
+        crypto_start_price: cryptoPrice,
       },
     ])
     .select("*");
@@ -35,15 +40,16 @@ export const createUserBet = async (
   };
 };
 
-export const updateUserBetSuccess = async (
+export const updateUserBet = async (
   betId: string,
-  success: boolean
-): Promise<ServiceResponse<UserBet[]>> => {
+  updatedBet: UserBet
+): Promise<ServiceResponse<UserBet>> => {
   const { data, error } = await supabase
     .from(USER_BETS_TABLE)
-    .update({ success })
+    .update(deepConvertToSnakeCase(updatedBet))
     .eq("id", betId)
-    .select("*");
+    .select("*")
+    .single();
 
   if (error)
     return {
@@ -58,13 +64,20 @@ export const updateUserBetSuccess = async (
 };
 
 export const getUserBets = async (
-  userId: string
+  userId: string,
+  sortField?: BASIC_SORT_FIELD | BET_SORT_FIELD,
+  sortOrder?: SORT_ORDER
 ): Promise<ServiceResponse<UserBet[]>> => {
-  const { data, error } = await supabase
-    .from(USER_BETS_TABLE)
-    .select("*")
-    .eq("user_id", userId)
-    .order("created_at", { ascending: false });
+  let query = supabase.from(USER_BETS_TABLE).select("*").eq("user_id", userId);
+
+  if (sortField) {
+    const ascending = sortOrder === "asc";
+    query = query.order(sortField, { ascending });
+  } else {
+    query = query.order("created_at", { ascending: false });
+  }
+
+  const { data, error } = await query;
 
   if (error)
     return {

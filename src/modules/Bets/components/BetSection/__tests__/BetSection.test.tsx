@@ -28,7 +28,7 @@ describe("BetSection", () => {
   beforeEach(() => {
     vi.clearAllMocks();
     mockUseActiveBets.mockReturnValue(undefined);
-    mockUseBetNotifications.mockReturnValue({ notifyScoreChange: vi.fn() });
+    mockUseBetNotifications.mockReturnValue({ notifyBetResult: vi.fn() });
   });
 
   it("should render bet description", () => {

@@ -1,5 +1,5 @@
 import { UserBet } from "../types/userBets";
-import { BET_TIME, CRYPTO_BET } from "../constants/bets";
+import { BET_TIME, CRYPTO_BET, BET_RESULT } from "../constants/bets";
 
 export const isBetReadyToResolve = (bet: UserBet) => {
   const currentTime = new Date();
@@ -11,14 +11,41 @@ export const isBetReadyToResolve = (bet: UserBet) => {
   return timeDifference >= oneMinuteInMs;
 };
 
-export const getBetPoints = (bet: UserBet, currentCryptoPrice: number) => {
-  if (bet.cryptoPrice === currentCryptoPrice) return 0;
+export const getUserBetUpdatedResult = (
+  bet: UserBet,
+  currentCryptoPrice: number
+): UserBet => {
+  const betWithCryptoEndPrice = {
+    ...bet,
+    cryptoEndPrice: currentCryptoPrice,
+  };
+
+  if (bet.cryptoStartPrice === currentCryptoPrice)
+    return { ...betWithCryptoEndPrice, result: BET_RESULT.TIE };
 
   if (bet.bet === CRYPTO_BET.UP) {
-    return currentCryptoPrice > bet.cryptoPrice ? 1 : -1;
+    return {
+      ...betWithCryptoEndPrice,
+      result:
+        currentCryptoPrice > bet.cryptoStartPrice
+          ? BET_RESULT.SUCCESS
+          : BET_RESULT.FAILURE,
+    };
   }
 
-  return currentCryptoPrice < bet.cryptoPrice ? 1 : -1;
+  return {
+    ...betWithCryptoEndPrice,
+    result:
+      currentCryptoPrice < bet.cryptoStartPrice
+        ? BET_RESULT.SUCCESS
+        : BET_RESULT.FAILURE,
+  };
+};
+
+export const getBetPoints = (bet: UserBet) => {
+  if (!bet.result || bet.result === BET_RESULT.TIE) return 0;
+
+  return bet.result === BET_RESULT.SUCCESS ? 1 : -1;
 };
 
 export const shouldUpdateScore = (betPoints: number, currentScore: number) =>

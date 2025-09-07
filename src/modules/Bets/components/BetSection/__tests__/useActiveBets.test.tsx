@@ -1,6 +1,7 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { renderHookWithIntl } from "~/tests/testUtils";
 import useActiveBets from "../hooks/useActiveBets";
+import { BET_RESULT } from "~/modules/Bets/constants/bets";
 import { GENERAL_ERROR } from "~/tests/constants/errorMessages";
 import { defaultUser, mockedBet } from "./mockedData";
 import * as betsService from "~/modules/Bets/service/betsService";
@@ -17,9 +18,9 @@ vi.mock("~/modules/Bets/utils/checkBetData");
 
 describe("useActiveBets", () => {
   const mockSetGeneralError = vi.fn();
-  const mockSetUserBets = vi.fn();
+  const mockUpdateOnGoingBet = vi.fn();
   const mockSetUserScore = vi.fn();
-  const mockUpdateUserBetSuccess = vi.mocked(betsService.updateUserBetSuccess);
+  const mockUpdateUserBet = vi.mocked(betsService.updateUserBet);
   const mockGetUserScore = vi.mocked(betsService.getUserScore);
   const mockUpsertUserScore = vi.mocked(betsService.upsertUserScore);
   const mockUseBetStore = vi.mocked(useBetStore.default);
@@ -28,6 +29,9 @@ describe("useActiveBets", () => {
   const mockIsBetReadyToResolve = vi.mocked(checkBetData.isBetReadyToResolve);
   const mockGetBetPoints = vi.mocked(checkBetData.getBetPoints);
   const mockShouldUpdateScore = vi.mocked(checkBetData.shouldUpdateScore);
+  const mockGetUserBetUpdatedResult = vi.mocked(
+    checkBetData.getUserBetUpdatedResult
+  );
 
   beforeEach(() => {
     vi.clearAllMocks();
@@ -48,7 +52,7 @@ describe("useActiveBets", () => {
     mockUseBetStore.mockReturnValue({
       bitcoinPrice: 45000,
       userBets: [],
-      setUserBets: mockSetUserBets,
+      updateOnGoingBet: mockUpdateOnGoingBet,
       setBitcoinPrice: vi.fn(),
       setUserScore: mockSetUserScore,
     });
@@ -67,11 +71,11 @@ describe("useActiveBets", () => {
   });
 
   it("should start interval when there is an ongoing bet", () => {
-    const ongoingBet = { ...mockedBet, success: null };
+    const ongoingBet = { ...mockedBet, result: null };
     mockUseBetStore.mockReturnValue({
       bitcoinPrice: 45000,
       userBets: [ongoingBet],
-      setUserBets: mockSetUserBets,
+      updateOnGoingBet: mockUpdateOnGoingBet,
       setBitcoinPrice: vi.fn(),
       setUserScore: mockSetUserScore,
     });
@@ -87,8 +91,8 @@ describe("useActiveBets", () => {
     const clearIntervalSpy = vi.spyOn(global, "clearInterval");
     mockUseBetStore.mockReturnValue({
       bitcoinPrice: 45000,
-      userBets: [{ ...mockedBet, success: null }],
-      setUserBets: mockSetUserBets,
+      userBets: [{ ...mockedBet, result: null }],
+      updateOnGoingBet: mockUpdateOnGoingBet,
       setBitcoinPrice: vi.fn(),
       setUserScore: mockSetUserScore,
     });
@@ -98,7 +102,7 @@ describe("useActiveBets", () => {
     mockUseBetStore.mockReturnValue({
       bitcoinPrice: 45000,
       userBets: [],
-      setUserBets: mockSetUserBets,
+      updateOnGoingBet: mockUpdateOnGoingBet,
       setBitcoinPrice: vi.fn(),
       setUserScore: mockSetUserScore,
     });
@@ -113,8 +117,8 @@ describe("useActiveBets", () => {
     mockIsBetReadyToResolve.mockReturnValue(true);
     mockUseBetStore.mockReturnValue({
       bitcoinPrice: 45000,
-      userBets: [{ ...mockedBet, success: null }],
-      setUserBets: mockSetUserBets,
+      userBets: [{ ...mockedBet, result: null }],
+      updateOnGoingBet: mockUpdateOnGoingBet,
       setBitcoinPrice: vi.fn(),
       setUserScore: mockSetUserScore,
     });
@@ -123,7 +127,7 @@ describe("useActiveBets", () => {
 
     vi.advanceTimersByTime(1000);
 
-    expect(mockUpdateUserBetSuccess).not.toHaveBeenCalled();
+    expect(mockUpdateUserBet).not.toHaveBeenCalled();
   });
 
   it("should not check bets when no user bets", async () => {
@@ -133,15 +137,15 @@ describe("useActiveBets", () => {
 
     vi.advanceTimersByTime(1000);
 
-    expect(mockUpdateUserBetSuccess).not.toHaveBeenCalled();
+    expect(mockUpdateUserBet).not.toHaveBeenCalled();
   });
 
   it("should not update bet when not ready to resolve", async () => {
-    const ongoingBet = { ...mockedBet, success: null };
+    const ongoingBet = { ...mockedBet, result: null };
     mockUseBetStore.mockReturnValue({
       bitcoinPrice: 45000,
       userBets: [ongoingBet],
-      setUserBets: mockSetUserBets,
+      updateOnGoingBet: mockUpdateOnGoingBet,
       setBitcoinPrice: vi.fn(),
       setUserScore: mockSetUserScore,
     });
@@ -151,27 +155,32 @@ describe("useActiveBets", () => {
 
     vi.advanceTimersByTime(1000);
 
-    expect(mockUpdateUserBetSuccess).not.toHaveBeenCalled();
+    expect(mockUpdateUserBet).not.toHaveBeenCalled();
   });
 
   it("should update successful bet and score", async () => {
-    const ongoingBet = { ...mockedBet, success: null };
-    const updatedBets = [{ ...ongoingBet, success: true }];
+    const ongoingBet = { ...mockedBet, result: null };
+    const updatedBet = {
+      ...ongoingBet,
+      result: BET_RESULT.SUCCESS,
+      cryptoEndPrice: ongoingBet.cryptoStartPrice + 1000,
+    };
 
     mockUseBetStore.mockReturnValue({
-      bitcoinPrice: 46000,
+      bitcoinPrice: updatedBet.cryptoEndPrice,
       userBets: [ongoingBet],
-      setUserBets: mockSetUserBets,
+      updateOnGoingBet: mockUpdateOnGoingBet,
       setBitcoinPrice: vi.fn(),
       setUserScore: mockSetUserScore,
     });
     mockIsBetReadyToResolve.mockReturnValue(true);
     mockGetBetPoints.mockReturnValue(1);
     mockShouldUpdateScore.mockReturnValue(true);
-    mockUpdateUserBetSuccess.mockResolvedValue({
+    mockUpdateUserBet.mockResolvedValue({
       error: false,
-      data: updatedBets,
+      data: updatedBet,
     });
+    mockGetUserBetUpdatedResult.mockReturnValue(updatedBet);
     mockGetUserScore.mockResolvedValue({
       error: false,
       data: {
@@ -186,30 +195,39 @@ describe("useActiveBets", () => {
     renderHookWithIntl(() => useActiveBets());
     await vi.runOnlyPendingTimersAsync();
 
-    expect(mockUpdateUserBetSuccess).toHaveBeenCalledWith(ongoingBet.id, true);
-    expect(mockSetUserBets).toHaveBeenCalledWith(updatedBets);
+    expect(mockGetUserBetUpdatedResult).toHaveBeenCalledWith(
+      ongoingBet,
+      updatedBet.cryptoEndPrice
+    );
+    expect(mockUpdateUserBet).toHaveBeenCalledWith(updatedBet.id, updatedBet);
+    expect(mockUpdateOnGoingBet).toHaveBeenCalledWith(updatedBet);
+    expect(mockGetBetPoints).toHaveBeenCalledWith(updatedBet);
     expect(mockGetUserScore).toHaveBeenCalledWith(defaultUser.id);
     expect(mockUpsertUserScore).toHaveBeenCalledWith(defaultUser.id, 6);
   });
 
   it("should update failed bet and score decrease", async () => {
-    const ongoingBet = { ...mockedBet, success: null };
-    const updatedBets = [{ ...ongoingBet, success: false }];
+    const ongoingBet = { ...mockedBet, result: null };
+    const updatedBet = {
+      ...ongoingBet,
+      result: BET_RESULT.FAILURE,
+      cryptoEndPrice: ongoingBet.cryptoStartPrice - 1000,
+    };
 
     mockUseBetStore.mockReturnValue({
-      bitcoinPrice: 44000,
+      bitcoinPrice: updatedBet.cryptoEndPrice,
       userBets: [ongoingBet],
-      setUserBets: mockSetUserBets,
+      updateOnGoingBet: mockUpdateOnGoingBet,
       setBitcoinPrice: vi.fn(),
       setUserScore: mockSetUserScore,
     });
-
+    mockGetUserBetUpdatedResult.mockReturnValue(updatedBet);
     mockIsBetReadyToResolve.mockReturnValue(true);
     mockGetBetPoints.mockReturnValue(-1);
     mockShouldUpdateScore.mockReturnValue(true);
-    mockUpdateUserBetSuccess.mockResolvedValue({
+    mockUpdateUserBet.mockResolvedValue({
       error: false,
-      data: updatedBets,
+      data: updatedBet,
     });
     mockGetUserScore.mockResolvedValue({
       error: false,
@@ -225,29 +243,39 @@ describe("useActiveBets", () => {
     renderHookWithIntl(() => useActiveBets());
     await vi.runOnlyPendingTimersAsync();
 
-    expect(mockUpdateUserBetSuccess).toHaveBeenCalledWith(ongoingBet.id, false);
-    expect(mockSetUserBets).toHaveBeenCalledWith(updatedBets);
+    expect(mockGetUserBetUpdatedResult).toHaveBeenCalledWith(
+      ongoingBet,
+      updatedBet.cryptoEndPrice
+    );
+    expect(mockUpdateUserBet).toHaveBeenCalledWith(updatedBet.id, updatedBet);
+    expect(mockUpdateOnGoingBet).toHaveBeenCalledWith(updatedBet);
     expect(mockGetUserScore).toHaveBeenCalledWith(defaultUser.id);
     expect(mockUpsertUserScore).toHaveBeenCalledWith(defaultUser.id, 2);
   });
 
   it("should update failed bet without score decrease if current score is 0", async () => {
-    const ongoingBet = { ...mockedBet, success: null };
-    const updatedBets = [{ ...ongoingBet, success: false }];
+    const ongoingBet = { ...mockedBet, result: null };
+    const updatedBet = {
+      ...ongoingBet,
+      result: BET_RESULT.FAILURE,
+      cryptoEndPrice: mockedBet.cryptoStartPrice - 1000,
+    };
 
     mockUseBetStore.mockReturnValue({
-      bitcoinPrice: 44000,
+      bitcoinPrice: updatedBet.cryptoEndPrice,
       userBets: [ongoingBet],
-      setUserBets: mockSetUserBets,
+      updateOnGoingBet: mockUpdateOnGoingBet,
       setBitcoinPrice: vi.fn(),
       setUserScore: mockSetUserScore,
     });
+
+    mockGetUserBetUpdatedResult.mockReturnValue(updatedBet);
     mockIsBetReadyToResolve.mockReturnValue(true);
     mockGetBetPoints.mockReturnValue(-1);
     mockShouldUpdateScore.mockReturnValue(false);
-    mockUpdateUserBetSuccess.mockResolvedValue({
+    mockUpdateUserBet.mockResolvedValue({
       error: false,
-      data: updatedBets,
+      data: updatedBet,
     });
     mockGetUserScore.mockResolvedValue({
       error: false,
@@ -263,26 +291,37 @@ describe("useActiveBets", () => {
     renderHookWithIntl(() => useActiveBets());
     await vi.runOnlyPendingTimersAsync();
 
-    expect(mockUpdateUserBetSuccess).toHaveBeenCalledWith(ongoingBet.id, false);
-    expect(mockSetUserBets).toHaveBeenCalledWith(updatedBets);
+    expect(mockGetUserBetUpdatedResult).toHaveBeenCalledWith(
+      ongoingBet,
+      updatedBet.cryptoEndPrice
+    );
+    expect(mockUpdateUserBet).toHaveBeenCalledWith(updatedBet.id, updatedBet);
+    expect(mockUpdateOnGoingBet).toHaveBeenCalledWith(updatedBet);
+    expect(mockGetBetPoints).toHaveBeenCalledWith(updatedBet);
     expect(mockGetUserScore).toHaveBeenCalledWith(defaultUser.id);
     expect(mockUpsertUserScore).not.toHaveBeenCalled();
   });
 
   it("should handle update user bet success error", async () => {
-    const ongoingBet = { ...mockedBet, success: null };
+    const ongoingBet = { ...mockedBet, result: null };
+    const updatedBet = {
+      ...ongoingBet,
+      result: BET_RESULT.SUCCESS,
+      cryptoEndPrice: 46000,
+    };
 
     mockUseBetStore.mockReturnValue({
       bitcoinPrice: 46000,
       userBets: [ongoingBet],
-      setUserBets: mockSetUserBets,
+      updateOnGoingBet: mockUpdateOnGoingBet,
       setBitcoinPrice: vi.fn(),
       setUserScore: mockSetUserScore,
     });
+    mockGetUserBetUpdatedResult.mockReturnValue(updatedBet);
     mockIsBetReadyToResolve.mockReturnValue(true);
     mockGetBetPoints.mockReturnValue(1);
     mockShouldUpdateScore.mockReturnValue(true);
-    mockUpdateUserBetSuccess.mockResolvedValue({
+    mockUpdateUserBet.mockResolvedValue({
       error: true,
       messageKey: "general.error",
     });
@@ -290,27 +329,35 @@ describe("useActiveBets", () => {
     renderHookWithIntl(() => useActiveBets());
     await vi.runOnlyPendingTimersAsync();
 
+    expect(mockGetUserBetUpdatedResult).toHaveBeenCalledWith(ongoingBet, 46000);
+    expect(mockUpdateUserBet).toHaveBeenCalledWith(updatedBet.id, updatedBet);
     expect(mockSetGeneralError).toHaveBeenCalledWith(GENERAL_ERROR);
     expect(mockGetUserScore).not.toHaveBeenCalled();
+    expect(mockUpsertUserScore).not.toHaveBeenCalled();
   });
 
   it("should handle getUserScore error gracefully", async () => {
-    const ongoingBet = { ...mockedBet, success: null };
-    const updatedBets = [{ ...ongoingBet, success: true }];
+    const ongoingBet = { ...mockedBet, result: null };
+    const updatedBet = {
+      ...ongoingBet,
+      result: BET_RESULT.SUCCESS,
+      cryptoEndPrice: ongoingBet.cryptoStartPrice + 1000,
+    };
 
     mockUseBetStore.mockReturnValue({
       bitcoinPrice: 46000,
       userBets: [ongoingBet],
-      setUserBets: mockSetUserBets,
+      updateOnGoingBet: mockUpdateOnGoingBet,
       setBitcoinPrice: vi.fn(),
       setUserScore: mockSetUserScore,
     });
+    mockGetUserBetUpdatedResult.mockReturnValue(updatedBet);
     mockIsBetReadyToResolve.mockReturnValue(true);
     mockGetBetPoints.mockReturnValue(1);
     mockShouldUpdateScore.mockReturnValue(true);
-    mockUpdateUserBetSuccess.mockResolvedValue({
+    mockUpdateUserBet.mockResolvedValue({
       error: false,
-      data: updatedBets,
+      data: updatedBet,
     });
     mockGetUserScore.mockResolvedValue({
       error: true,
@@ -320,18 +367,18 @@ describe("useActiveBets", () => {
     renderHookWithIntl(() => useActiveBets());
     await vi.runOnlyPendingTimersAsync();
 
-    expect(mockUpdateUserBetSuccess).toHaveBeenCalledWith(ongoingBet.id, true);
-    expect(mockSetUserBets).toHaveBeenCalledWith(updatedBets);
+    expect(mockUpdateUserBet).toHaveBeenCalledWith(ongoingBet.id, updatedBet);
+    expect(mockUpdateOnGoingBet).toHaveBeenCalledWith(updatedBet);
     expect(mockGetUserScore).toHaveBeenCalledWith(defaultUser.id);
     expect(mockUpsertUserScore).not.toHaveBeenCalled();
   });
 
   it("should clean up interval on unmount", () => {
-    const ongoingBet = { ...mockedBet, success: null };
+    const ongoingBet = { ...mockedBet, result: null };
     mockUseBetStore.mockReturnValue({
       bitcoinPrice: 45000,
       userBets: [ongoingBet],
-      setUserBets: mockSetUserBets,
+      updateOnGoingBet: mockUpdateOnGoingBet,
       setBitcoinPrice: vi.fn(),
       setUserScore: mockSetUserScore,
     });

@@ -33,6 +33,7 @@ describe("BetText", () => {
           setBitcoinPrice: vi.fn(),
           setUserBets: vi.fn(),
           setUserScore: vi.fn(),
+          updateOnGoingBet: vi.fn(),
         };
         return selector(state);
       });
@@ -55,6 +56,7 @@ describe("BetText", () => {
           setBitcoinPrice: vi.fn(),
           setUserBets: vi.fn(),
           setUserScore: vi.fn(),
+          updateOnGoingBet: vi.fn(),
         };
         return selector(state);
       });
@@ -75,6 +77,7 @@ describe("BetText", () => {
           setBitcoinPrice: vi.fn(),
           setUserBets: vi.fn(),
           setUserScore: vi.fn(),
+          updateOnGoingBet: vi.fn(),
         };
         return selector(state);
       });
@@ -97,6 +100,7 @@ describe("BetText", () => {
           setBitcoinPrice: vi.fn(),
           setUserBets: vi.fn(),
           setUserScore: vi.fn(),
+          updateOnGoingBet: vi.fn(),
         };
         return selector(state);
       });
@@ -117,6 +121,7 @@ describe("BetText", () => {
           setBitcoinPrice: vi.fn(),
           setUserBets: vi.fn(),
           setUserScore: vi.fn(),
+          updateOnGoingBet: vi.fn(),
         };
         return selector(state);
       });
@@ -139,6 +144,7 @@ describe("BetText", () => {
           setBitcoinPrice: vi.fn(),
           setUserBets: vi.fn(),
           setUserScore: vi.fn(),
+          updateOnGoingBet: vi.fn(),
         };
         return selector(state);
       });
@@ -157,6 +163,7 @@ describe("BetText", () => {
           setBitcoinPrice: vi.fn(),
           setUserBets: vi.fn(),
           setUserScore: vi.fn(),
+          updateOnGoingBet: vi.fn(),
         };
         return selector(state);
       });
