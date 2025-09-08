@@ -14,6 +14,7 @@ const BetResultTag = ({ result }: BetResultTagProps) => {
       <Chip
         label={intl.formatMessage({ id: "bet.status.pending" })}
         color="warning"
+        variant="outlined"
         size="small"
       />
     );

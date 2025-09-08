@@ -7,6 +7,48 @@
   padding: 16px;
   gap: 12px;
   box-sizing: border-box;
+  position: relative;
+
+  @media (max-width: 768px) {
+    padding: 8px;
+    gap: 8px;
+    flex-direction: column;
+  }
+
+  @media (max-width: 480px) {
+    padding: 4px;
+    gap: 4px;
+  }
+
+  &__mobileMenuButton {
+    position: fixed !important;
+    top: 16px;
+    left: 16px;
+    z-index: 1300;
+    background-color: variables.$color-surface !important;
+    color: variables.$color-orange !important;
+    border: 1px solid rgba(variables.$color-muted, 0.2) !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3) !important;
+
+    @media (max-width: 480px) {
+      top: 12px;
+      left: 12px;
+    }
+
+    &:hover {
+      background-color: variables.$color-surface-dark !important;
+    }
+  }
+
+  &__overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1200;
+  }
 
   &__main {
     display: flex;
@@ -16,6 +58,16 @@
     gap: 12px;
     width: 100%;
     height: 100%;
+
+    @media (max-width: 768px) {
+      gap: 8px;
+      padding-top: 60px;
+    }
+
+    @media (max-width: 480px) {
+      padding-top: 56px;
+      gap: 6px;
+    }
   }
 
   &__content {
@@ -28,5 +80,15 @@
     display: flex;
     overflow: auto;
     width: 100%;
+
+    @media (max-width: 768px) {
+      border-radius: 8px;
+      padding: 8px;
+    }
+
+    @media (max-width: 480px) {
+      border-radius: 6px;
+      padding: 6px;
+    }
   }
 }

@@ -61,7 +61,9 @@ const UserAuthForm = () => {
         </header>
 
         <section className={styles.userAuthForm__content}>
-          <div>{intl.formatMessage({ id: `${authFormType}.description` })}</div>
+          <div className={styles.userAuthForm__description}>
+            {intl.formatMessage({ id: `${authFormType}.description` })}
+          </div>
           <TextField
             className={styles.userAuthForm__input}
             label={intl.formatMessage({ id: "username" })}

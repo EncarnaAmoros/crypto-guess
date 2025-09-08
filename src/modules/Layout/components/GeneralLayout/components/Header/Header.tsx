@@ -1,8 +1,10 @@
 import { useIntl } from "react-intl";
 import { useShallow } from "zustand/shallow";
 import useSessionStore from "~/modules/Auth/store/useSessionStore";
+import useGeneralLayoutStore from "~/modules/Layout/hooks/useGeneralLayoutStore";
 import PersonIcon from "@mui/icons-material/Person";
 import { Button } from "@mui/material";
+import classNames from "classnames";
 
 import styles from "./Header.module.scss";
 
@@ -16,12 +18,18 @@ const Header = () => {
     }))
   );
 
+  const isMobile = useGeneralLayoutStore((state) => state.isMobile);
+
   const handleClearAccount = () => {
     cleanSession();
   };
 
   return (
-    <header className={styles.header}>
+    <header
+      className={classNames(styles.header, {
+        [styles["header--mobile"]]: isMobile,
+      })}
+    >
       <div className={styles.header__title}>
         {intl.formatMessage(
           { id: "hello.username" },
@@ -32,7 +40,8 @@ const Header = () => {
         variant="text"
         onClick={handleClearAccount}
         className={styles.header__button}
-        startIcon={<PersonIcon />}
+        startIcon={!isMobile ? <PersonIcon /> : undefined}
+        size={isMobile ? "small" : "medium"}
       >
         {intl.formatMessage({ id: "logout" })}
       </Button>

@@ -8,8 +8,8 @@
   padding: 36px;
   gap: 12px;
   box-sizing: border-box;
-  min-width: 500px;
   overflow: auto;
+  min-width: unset;
 
   &__container {
     display: flex;
@@ -23,6 +23,18 @@
     overflow: auto;
     width: 100%;
     gap: 16px;
+
+    @media (max-width: 768px) {
+      padding: 24px;
+      gap: 12px;
+      border-radius: 8px;
+    }
+
+    @media (max-width: 480px) {
+      padding: 16px;
+      gap: 10px;
+      border-radius: 6px;
+    }
   }
 
   &__header {
@@ -34,7 +46,7 @@
 
   &__navButton {
     &--active {
-      color: variables.$color-gold !important;
+      color: variables.$color-orange !important;
     }
   }
 
@@ -49,7 +61,22 @@
     box-sizing: border-box;
     overflow: auto;
     gap: 25px;
-    min-width: 400px;
+    min-width: 320px;
+
+    @media (max-width: 768px) {
+      padding: 24px;
+      gap: 20px;
+      min-width: unset;
+    }
+
+    @media (max-width: 480px) {
+      padding: 16px;
+      gap: 16px;
+    }
+  }
+
+  &__description {
+    text-align: center;
   }
 
   &__userAuthForm {
@@ -69,5 +96,18 @@
     width: 350px !important;
     min-width: 250px !important;
     margin: 0px !important;
+
+    @media (max-width: 768px) {
+      width: 100% !important;
+      max-width: 350px !important;
+      min-width: 200px !important;
+    }
+
+    @media (max-width: 480px) {
+      width: 100% !important;
+      max-width: 280px !important;
+      min-width: unset !important;
+      border-radius: 8px;
+    }
   }
 }
