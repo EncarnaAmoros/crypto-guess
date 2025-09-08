@@ -2,7 +2,6 @@ import { useEffect } from "react";
 import { useIntl } from "react-intl";
 import { GET_BTC_PRICE_URL } from "~/modules/Bets/constants/bets";
 import useBetStore from "~/modules/Bets/store/useBetStore";
-import useGeneralLayoutStore from "~/modules/Layout/hooks/useGeneralLayoutStore";
 
 // To simplify the project, this is not a real web socket streaming the price
 // It is a simple fetch that is called every 15 seconds
@@ -12,9 +11,6 @@ const useBTCPrice = (intervalMs = 15000) => {
   const intl = useIntl();
 
   const setBitcoinPrice = useBetStore((state) => state.setBitcoinPrice);
-  const setGeneralError = useGeneralLayoutStore(
-    (state) => state.setGeneralError
-  );
 
   useEffect(() => {
     let isMounted = true;
@@ -29,7 +25,7 @@ const useBTCPrice = (intervalMs = 15000) => {
         }
       } catch {
         if (isMounted) {
-          setGeneralError(intl.formatMessage({ id: "general.error" }));
+          console.log(intl.formatMessage({ id: "general.error" }));
         }
       }
     };
@@ -41,7 +37,7 @@ const useBTCPrice = (intervalMs = 15000) => {
       isMounted = false;
       clearInterval(interval);
     };
-  }, [intl, setBitcoinPrice, setGeneralError, intervalMs]);
+  }, [intl, setBitcoinPrice, intervalMs]);
 };
 
 export default useBTCPrice;

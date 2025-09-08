@@ -27,15 +27,16 @@ Additionally, the app features a dedicated **statistics page** where players can
 - TypeScript
 - Vite
 - Vitest
+- Testing Library
+- MSW
 - Material UI
 - React Router
 - React Intl for translations
 - Zustand for global state
 - ESLint
 - Prettier
-- Testing Library
 - Supabase (DB)
-- MSW
+- Netlify
 
 ## Remote deployment
 
@@ -85,3 +86,5 @@ To sort translation keys, run:
 ```
 npm run sort-translations
 ```
+
+## Demo
