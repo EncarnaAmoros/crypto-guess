@@ -12,12 +12,51 @@
   background-color: variables.$color-surface;
   border: 1px solid rgba(variables.$color-muted, 0.1);
   border-radius: 12px;
+  transition: transform 0.3s ease-in-out;
+
+  &--mobile {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1250;
+    height: 100dvh;
+    width: 280px;
+    transform: translateX(-100%);
+    border-radius: 0;
+    border-right: 1px solid rgba(variables.$color-muted, 0.2);
+    border-left: none;
+    border-top: none;
+    border-bottom: none;
+
+    @media (max-width: 480px) {
+      width: 260px;
+    }
+
+    &.mainSideBar--open {
+      transform: translateX(0);
+    }
+  }
+
+  @media (max-width: 768px) {
+    gap: 30px;
+    padding: 12px 0px 8px 0px;
+  }
+
+  @media (max-width: 480px) {
+    gap: 24px;
+    padding: 10px 0px 6px 0px;
+  }
 
   &__header {
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 12px;
+
+    @media (max-width: 768px) and (max-width: 480px) {
+      margin-top: 7px;
+      margin-left: 22px;
+    }
   }
 
   &__icon {
@@ -30,6 +69,14 @@
     font-size: 22px;
     font-weight: 600;
     font-family: "Source Sans 3", sans-serif;
+
+    @media (max-width: 768px) {
+      font-size: 20px;
+    }
+
+    @media (max-width: 480px) {
+      font-size: 18px;
+    }
   }
 
   &__nav {

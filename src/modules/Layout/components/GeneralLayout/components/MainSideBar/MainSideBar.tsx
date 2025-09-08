@@ -12,14 +12,23 @@ import {
   Analytics as AnalyticsIcon,
 } from "@mui/icons-material";
 import { ROUTES } from "~/routing/routes";
+import useGeneralLayoutStore from "~/modules/Layout/hooks/useGeneralLayoutStore";
+import classNames from "classnames";
+
 import styles from "./MainSideBar.module.scss";
 
 const APP_NAME = "PlayCrypto";
 
-const MainSideBar = () => {
+interface MainSideBarProps {
+  isOpen?: boolean;
+  onClose?: () => void;
+}
+
+const MainSideBar = ({ isOpen = false, onClose }: MainSideBarProps) => {
   const intl = useIntl();
   const location = useLocation();
   const navigate = useNavigate();
+  const isMobile = useGeneralLayoutStore((state) => state.isMobile);
 
   const menuItems = [
     {
@@ -38,6 +47,9 @@ const MainSideBar = () => {
 
   const handleNavigation = (route: string) => {
     navigate(route);
+    if (isMobile && onClose) {
+      onClose();
+    }
   };
 
   const isActive = (route: string) => {
@@ -45,7 +57,12 @@ const MainSideBar = () => {
   };
 
   return (
-    <div className={styles.mainSideBar}>
+    <div
+      className={classNames(styles.mainSideBar, {
+        [styles["mainSideBar--mobile"]]: isMobile,
+        [styles["mainSideBar--open"]]: isMobile && isOpen,
+      })}
+    >
       <header className={styles.mainSideBar__header}>
         <img
           className={styles.mainSideBar__icon}
