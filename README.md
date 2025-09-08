@@ -87,4 +87,14 @@ To sort translation keys, run:
 npm run sort-translations
 ```
 
-## Demo
+## Demo video
+
+https://github.com/user-attachments/assets/27731349-7aa5-49f2-a37d-f263befe503e
+
+
+## App screenshots
+
+<img width="1112" height="926" alt="demo1" src="https://github.com/user-attachments/assets/a832b335-4afd-4d7a-94d6-921671c953ef" />
+<img width="1111" height="932" alt="demo2" src="https://github.com/user-attachments/assets/fe4221c8-6835-483e-8dd5-49c492fe4aed" />
+
+
