@@ -16,9 +16,19 @@ Additionally, the app features a dedicated **statistics page** where players can
 
 ## Notes
 
+### Crypto BTC price:
 - For this prototype, the Bitcoin price is fetched using **polling** instead of a real-time **stream**.
 - The ideal implementation should use a backend service that connects to a real-time stream of BTC prices and relays updates to the frontend.
 - Since there were issues running the stream locally, it was replaced with polling to keep the project simple and functional for testing purposes.
+
+### Testing
+We have implemented both unit and integration tests, though not for the entire codebase. The project includes a solid set of examples that demonstrate how we approach testing in different areas, such as:
+
+- UX components
+- General components
+- TypeScript utility functions
+- Logic within custom hooks
+- Complete features (integration tests)
 
 ## Tech stack
 
