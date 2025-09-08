@@ -35,20 +35,20 @@ We have implemented both unit and integration tests, though not for the entire c
 - React
 - CSS Modules
 - TypeScript
+- React Router
+- ESLint
+- Prettier
 - Vite
 - Vitest
 - Testing Library
-- MSW
-- Material UI
-- React Router
-- React Intl for translations
-- Zustand for global state
-- ESLint
-- Prettier
-- Supabase (DB)
-- Netlify
+- MSW (mock backend/db service calls)
+- Material UI (UX components library)
+- React Intl (for translations)
+- Zustand (global state)
+- Supabase (database)
+- Netlify (hosting)
 
-## Remote deployment
+## Hosting
 
 The app is deployed using Netlify, 👉 [click here](https://playcrypto.netlify.app/)!
 
