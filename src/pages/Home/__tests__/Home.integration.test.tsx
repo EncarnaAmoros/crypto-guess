@@ -1,4 +1,4 @@
-import { screen, fireEvent } from "@testing-library/react";
+import { screen, act, fireEvent } from "@testing-library/react";
 import {
   describe,
   it,
@@ -56,28 +56,66 @@ describe("Home Integration Tests", () => {
   });
   afterAll(() => server.close());
 
-  it("should complete betting flow (up bet) and score update successfully", async () => {
+  it("should complete bet flow (up bet) and score update with success", async () => {
     renderWithIntl(<Home />);
 
     const upButton = screen.getByLabelText(mockBetUpLabel);
     const downButton = screen.getByLabelText(mockBetDownLabel);
 
-    await vi.runOnlyPendingTimersAsync();
-
+    await act(async () => {
+      await vi.runOnlyPendingTimersAsync();
+    });
     expect(screen.getByText(`45,001 $`)).toBeVisible();
     expect(screen.getByText("15")).toBeVisible();
     expect(upButton).not.toBeDisabled();
     expect(downButton).not.toBeDisabled();
 
-    fireEvent.click(upButton);
-    await vi.runOnlyPendingTimersAsync();
+    await act(async () => {
+      fireEvent.click(upButton);
+      await vi.runOnlyPendingTimersAsync();
+    });
 
     expect(upButton).toBeDisabled();
     expect(downButton).toBeDisabled();
 
-    vi.advanceTimersByTime(BET_TIME);
-    await vi.runOnlyPendingTimersAsync();
+    await act(async () => {
+      vi.advanceTimersByTime(BET_TIME);
+      await vi.runOnlyPendingTimersAsync();
+    });
+
     expect(screen.getByText("16")).toBeVisible();
+    expect(upButton).not.toBeDisabled();
+    expect(downButton).not.toBeDisabled();
+  });
+
+  it("should complete bet flow (down bet) and score update with failure", async () => {
+    renderWithIntl(<Home />);
+
+    const upButton = screen.getByLabelText(mockBetUpLabel);
+    const downButton = screen.getByLabelText(mockBetDownLabel);
+
+    await act(async () => {
+      await vi.runOnlyPendingTimersAsync();
+    });
+    expect(screen.getByText(`45,001 $`)).toBeVisible();
+    expect(screen.getByText("15")).toBeVisible();
+    expect(upButton).not.toBeDisabled();
+    expect(downButton).not.toBeDisabled();
+
+    await act(async () => {
+      fireEvent.click(downButton);
+      await vi.runOnlyPendingTimersAsync();
+    });
+
+    expect(upButton).toBeDisabled();
+    expect(downButton).toBeDisabled();
+
+    await act(async () => {
+      vi.advanceTimersByTime(BET_TIME);
+      await vi.runOnlyPendingTimersAsync();
+    });
+
+    expect(screen.getByText("14")).toBeVisible();
     expect(upButton).not.toBeDisabled();
     expect(downButton).not.toBeDisabled();
   });

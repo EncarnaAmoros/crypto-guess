@@ -1,3 +1,4 @@
+import { act } from "@testing-library/react";
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { renderHookWithIntl } from "~/tests/testUtils";
 import useActiveBets from "../hooks/useActiveBets";
@@ -193,7 +194,10 @@ describe("useActiveBets", () => {
     });
 
     renderHookWithIntl(() => useActiveBets());
-    await vi.runOnlyPendingTimersAsync();
+
+    await act(async () => {
+      await vi.runOnlyPendingTimersAsync();
+    });
 
     expect(mockGetUserBetUpdatedResult).toHaveBeenCalledWith(
       ongoingBet,
@@ -241,7 +245,10 @@ describe("useActiveBets", () => {
     });
 
     renderHookWithIntl(() => useActiveBets());
-    await vi.runOnlyPendingTimersAsync();
+
+    await act(async () => {
+      await vi.runOnlyPendingTimersAsync();
+    });
 
     expect(mockGetUserBetUpdatedResult).toHaveBeenCalledWith(
       ongoingBet,
@@ -289,7 +296,10 @@ describe("useActiveBets", () => {
     });
 
     renderHookWithIntl(() => useActiveBets());
-    await vi.runOnlyPendingTimersAsync();
+
+    await act(async () => {
+      await vi.runOnlyPendingTimersAsync();
+    });
 
     expect(mockGetUserBetUpdatedResult).toHaveBeenCalledWith(
       ongoingBet,
@@ -327,7 +337,10 @@ describe("useActiveBets", () => {
     });
 
     renderHookWithIntl(() => useActiveBets());
-    await vi.runOnlyPendingTimersAsync();
+
+    await act(async () => {
+      await vi.runOnlyPendingTimersAsync();
+    });
 
     expect(mockGetUserBetUpdatedResult).toHaveBeenCalledWith(ongoingBet, 46000);
     expect(mockUpdateUserBet).toHaveBeenCalledWith(updatedBet.id, updatedBet);
@@ -365,7 +378,10 @@ describe("useActiveBets", () => {
     });
 
     renderHookWithIntl(() => useActiveBets());
-    await vi.runOnlyPendingTimersAsync();
+
+    await act(async () => {
+      await vi.runOnlyPendingTimersAsync();
+    });
 
     expect(mockUpdateUserBet).toHaveBeenCalledWith(ongoingBet.id, updatedBet);
     expect(mockUpdateOnGoingBet).toHaveBeenCalledWith(updatedBet);

@@ -25,7 +25,7 @@ const useBTCPrice = (intervalMs = 15000) => {
         }
       } catch {
         if (isMounted) {
-          console.log(intl.formatMessage({ id: "general.error" }));
+          console.error(intl.formatMessage({ id: "general.error" }));
         }
       }
     };
