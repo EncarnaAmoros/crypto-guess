@@ -1,5 +1,5 @@
 import { http, HttpResponse } from "msw";
-import { BET_RESULT } from "~/modules/Bets/constants/bets";
+import { BET_RESULT, CRYPTO_BET } from "~/modules/Bets/constants/bets";
 import {
   USER_BETS_TABLE,
   USER_SCORES_TABLE,
@@ -29,11 +29,28 @@ export const betsRequestHandler = [
     }
   ),
 
-  http.post(`${SUPABASE_URL}${SUPABASE_V1_URL}${USER_BETS_TABLE}`, async () => {
-    return HttpResponse.json([...mockUserBets, mockOngoingBet], {
-      status: 201,
-    });
-  }),
+  http.post(
+    `${SUPABASE_URL}${SUPABASE_V1_URL}${USER_BETS_TABLE}`,
+    async ({ request }) => {
+      const body = (await request.json()) as {
+        userId: string;
+        bet: CRYPTO_BET;
+        cryptoPrice: number;
+      }[];
+
+      const mockUserBetsResponse = [
+        ...mockUserBets,
+        {
+          ...mockOngoingBet,
+          bet: body[0].bet,
+          crypto_start_price: body[0].cryptoPrice,
+        },
+      ];
+      return HttpResponse.json(mockUserBetsResponse, {
+        status: 201,
+      });
+    }
+  ),
 
   http.patch(
     `${SUPABASE_URL}${SUPABASE_V1_URL}${USER_BETS_TABLE}`,
